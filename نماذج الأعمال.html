@@ -1,0 +1,539 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>نماذج الأعمال</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Noto+Kufi+Arabic:wght@600;800&display=swap">
+<style>
+  /* Layout: gold title band with a navy wedge (echoing the textbook chapter opener), then one reading column that moves through three stages: warm-up, lesson, closing quiz. */
+  :root {
+    --bg: #F3F5F8;
+    --surface: #FFFFFF;
+    --surface-2: #EAF0F6;
+    --ink: #14283C;
+    --muted: #55687D;
+    --line: #D3DCE6;
+    --navy: #0F4468;
+    --navy-ink: #FFFFFF;
+    --head: #0F4468;
+    --gold: #E9BF5B;
+    --gold-soft: #FBF1D4;
+    --on-gold: #0F3350;
+    --cyan: #0E8FBF;
+    --cyan-text: #0A6F96;
+    --cyan-soft: #DFF2FA;
+    --ok: #1B7A4B;
+    --ok-soft: #DDF3E6;
+    --bad: #B3362E;
+    --bad-soft: #FAE2DF;
+    --font-display: 'Noto Kufi Arabic', 'Segoe UI', Tahoma, sans-serif;
+    --font-body: 'IBM Plex Sans Arabic', 'Segoe UI', Tahoma, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0B1620; --surface: #122232; --surface-2: #19304A; --ink: #E7EEF5; --muted: #9FB2C6; --line: #26405A;
+      --navy: #1A5782; --navy-ink: #FFFFFF; --head: #BFE3F7;
+      --gold: #F0C65F; --gold-soft: #2E2812; --on-gold: #0F3350;
+      --cyan: #4DB9E6; --cyan-text: #7CCBF0; --cyan-soft: #11344A;
+      --ok: #62D393; --ok-soft: #12362A; --bad: #FF8F87; --bad-soft: #3D1D1B;
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #0B1620; --surface: #122232; --surface-2: #19304A; --ink: #E7EEF5; --muted: #9FB2C6; --line: #26405A;
+    --navy: #1A5782; --navy-ink: #FFFFFF; --head: #BFE3F7;
+    --gold: #F0C65F; --gold-soft: #2E2812; --on-gold: #0F3350;
+    --cyan: #4DB9E6; --cyan-text: #7CCBF0; --cyan-soft: #11344A;
+    --ok: #62D393; --ok-soft: #12362A; --bad: #FF8F87; --bad-soft: #3D1D1B;
+    color-scheme: dark;
+  }
+
+  body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 16px; line-height: 1.85; }
+  *, *::before, *::after { box-sizing: border-box; }
+  button, input, textarea { font: inherit; color: inherit; }
+  :focus-visible { outline: 3px solid var(--cyan); outline-offset: 2px; }
+  h1, h2, h3, p, ul { margin: 0; }
+  ul { padding: 0; list-style: none; }
+
+  .wrap {
+    max-width: 860px; margin: 0 auto;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+  }
+
+  /* title band */
+  .band { position: relative; background: var(--gold); color: var(--on-gold); overflow: hidden; }
+  .band::before {
+    content: ""; position: absolute; top: 0; bottom: 0; right: 0; width: clamp(72px, 18vw, 170px);
+    background: var(--navy); clip-path: polygon(0 0, 100% 0, 100% 100%);
+  }
+  .band::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    background-image: linear-gradient(rgba(15,51,80,.07) 1px, transparent 1px), linear-gradient(90deg, rgba(15,51,80,.07) 1px, transparent 1px);
+    background-size: 28px 28px;
+  }
+  .head { position: relative; z-index: 1; padding-block: 30px 32px; }
+  .head-text { margin-inline-start: clamp(76px, 16vw, 160px); }
+  .eyebrow { font-weight: 600; font-size: 1.05rem; letter-spacing: .02em; }
+  .head h1 { font-family: var(--font-display); font-weight: 800; font-size: clamp(2rem, 6.5vw, 3rem); line-height: 1.3; text-wrap: balance; }
+  .head .en { font-size: .95rem; font-weight: 500; opacity: .85; direction: ltr; text-align: right; }
+
+  /* phase stepper */
+  .phases { display: flex; align-items: center; gap: 10px; padding-block: 20px 4px; }
+  .ph { display: flex; align-items: center; gap: 8px; color: var(--muted); font-weight: 500; font-size: .95rem; white-space: nowrap; }
+  .ph b { display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--line); font-size: .85rem; background: var(--surface); }
+  .ph.on { color: var(--ink); font-weight: 600; }
+  .ph.on b { background: var(--gold); border-color: var(--gold); color: var(--on-gold); }
+  .ph.done b { background: var(--navy); border-color: var(--navy); color: var(--navy-ink); }
+  .ph-line { flex: 1; height: 2px; background: var(--line); min-width: 12px; }
+
+  /* stage */
+  .stage { margin-block: 16px 28px; background: var(--surface); border: 1px solid var(--line); border-radius: 14px; padding: clamp(18px, 4vw, 34px); scroll-margin-top: 12px; }
+  .stage h2 { font-family: var(--font-display); font-weight: 800; color: var(--head); font-size: clamp(1.3rem, 3.6vw, 1.7rem); line-height: 1.6; text-wrap: balance; }
+  .en { font-family: var(--font-body); font-weight: 500; color: var(--cyan-text); font-size: .9rem; direction: ltr; unicode-bidi: isolate; display: inline-block; }
+  .stage p + p { margin-top: 12px; }
+  .lead { color: var(--muted); }
+
+  .btn { display: inline-flex; align-items: center; gap: 8px; padding: 12px 22px; border: 0; border-radius: 10px; background: var(--navy); color: var(--navy-ink); font-weight: 600; cursor: pointer; }
+  .btn:hover { filter: brightness(1.1); }
+  .btn.gold { background: var(--gold); color: var(--on-gold); }
+  .btn.ghost { background: transparent; color: var(--head); border: 1.5px solid var(--line); }
+  .btn[disabled] { opacity: .4; cursor: not-allowed; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+  .actions .push { margin-inline-start: auto; }
+
+  /* intro */
+  .goals { display: grid; gap: 10px; margin-top: 16px; }
+  .goals li { display: flex; gap: 12px; align-items: flex-start; }
+  .goals li::before { content: ""; flex: none; width: 10px; height: 10px; margin-top: 10px; background: var(--gold); transform: rotate(45deg); }
+  .flow { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; margin-top: 24px; }
+  .flow > div { background: var(--surface-2); border-radius: 10px; padding: 14px 16px; }
+  .flow strong { display: block; color: var(--head); font-family: var(--font-display); }
+  .flow span { color: var(--muted); font-size: .95rem; }
+
+  /* questions */
+  .qmeta { display: flex; align-items: center; gap: 14px; color: var(--muted); font-size: .95rem; margin-bottom: 14px; }
+  .qmeta span { white-space: nowrap; }
+  .bar { flex: 1; height: 6px; background: var(--surface-2); border-radius: 3px; overflow: hidden; }
+  .bar i { display: block; height: 100%; background: var(--gold); border-radius: 3px; transition: width .3s; }
+  .opts { display: grid; gap: 10px; margin-top: 18px; }
+  .opt { display: flex; gap: 14px; align-items: flex-start; width: 100%; text-align: start; padding: 14px 16px; background: var(--surface); border: 1.5px solid var(--line); border-radius: 12px; cursor: pointer; line-height: 1.7; }
+  .opt:hover:not([disabled]) { border-color: var(--cyan); background: var(--cyan-soft); }
+  .opt .lt { flex: none; display: grid; place-items: center; width: 30px; height: 30px; border-radius: 50%; background: var(--surface-2); color: var(--head); font-weight: 600; font-size: .9rem; }
+  .opt[disabled] { cursor: default; }
+  .opt.ok { border-color: var(--ok); background: var(--ok-soft); }
+  .opt.ok .lt { background: var(--ok); color: var(--surface); }
+  .opt.bad { border-color: var(--bad); background: var(--bad-soft); }
+  .opt.bad .lt { background: var(--bad); color: var(--surface); }
+  .opt.dim { opacity: .55; }
+  .fb { margin-top: 16px; padding: 14px 16px; border-radius: 12px; background: var(--surface-2); border-inline-start: 5px solid var(--cyan); }
+  .fb.ok { background: var(--ok-soft); border-color: var(--ok); }
+  .fb.bad { background: var(--bad-soft); border-color: var(--bad); }
+  .fb strong { display: block; }
+
+  /* lesson nav */
+  .secnav { display: flex; gap: 8px; overflow-x: auto; padding-bottom: 10px; margin-bottom: 18px; border-bottom: 1px solid var(--line); }
+  .chip { flex: none; display: inline-flex; align-items: center; gap: 8px; padding: 7px 14px 7px 12px; border: 1.5px solid var(--line); border-radius: 999px; background: var(--surface); cursor: pointer; font-size: .92rem; white-space: nowrap; }
+  .chip i { font-style: normal; display: grid; place-items: center; width: 22px; height: 22px; border-radius: 50%; background: var(--surface-2); font-size: .78rem; font-weight: 600; }
+  .chip[aria-current="step"] { background: var(--navy); color: var(--navy-ink); border-color: var(--navy); }
+  .chip[aria-current="step"] i { background: var(--gold); color: var(--on-gold); }
+  .sec > * + * { margin-top: 14px; }
+
+  .tabs { display: inline-flex; flex-wrap: wrap; gap: 4px; padding: 4px; background: var(--surface-2); border-radius: 12px; }
+  .tab { padding: 8px 16px; border: 0; background: transparent; border-radius: 9px; cursor: pointer; font-weight: 500; }
+  .tab[aria-selected="true"] { background: var(--surface); color: var(--head); font-weight: 600; box-shadow: 0 1px 3px rgba(0,0,0,.15); }
+  .panel { padding: 16px 18px; border: 1px solid var(--line); border-radius: 12px; }
+  .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+  .tags li { padding: 6px 14px; background: var(--cyan-soft); color: var(--cyan-text); border-radius: 8px; font-weight: 500; }
+  .dots li { position: relative; padding-inline-start: 22px; }
+  .dots li + li { margin-top: 6px; }
+  .dots li::before { content: ""; position: absolute; inset-inline-start: 2px; top: .75em; width: 8px; height: 8px; background: var(--gold); transform: rotate(45deg); }
+  .tip { display: flex; gap: 12px; padding: 14px 16px; background: var(--cyan-soft); border-radius: 12px; color: var(--ink); }
+  .tip svg { flex: none; width: 24px; height: 24px; margin-top: 4px; color: var(--cyan-text); }
+  .ask { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 10px; }
+  .ask li { padding: 12px 14px; background: var(--gold-soft); border-radius: 10px; font-weight: 500; }
+  .sub { font-family: var(--font-display); font-weight: 600; color: var(--head); font-size: 1.05rem; }
+
+  .check { display: flex; gap: 12px; align-items: flex-start; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px; cursor: pointer; }
+  .check + .check { margin-top: 8px; }
+  .check input { flex: none; width: 20px; height: 20px; margin-top: 5px; accent-color: var(--navy); }
+  .check:has(input:checked) { background: var(--ok-soft); border-color: var(--ok); }
+  .cl-count { margin-top: 10px; color: var(--muted); font-size: .92rem; }
+
+  /* purchase form */
+  .seg { display: flex; flex-wrap: wrap; gap: 8px; }
+  .seg button { padding: 8px 16px; border: 1.5px solid var(--line); background: var(--surface); border-radius: 999px; cursor: pointer; font-weight: 500; }
+  .seg button[aria-pressed="true"] { background: var(--navy); color: var(--navy-ink); border-color: var(--navy); }
+  .zone-note { padding: 14px 16px; background: var(--gold-soft); border-radius: 12px; min-height: 5.5em; }
+  .zone-note strong { color: var(--head); }
+  .paper { background: var(--surface); border: 1.5px solid var(--line); border-radius: 6px; padding: 10px; display: grid; gap: 10px; box-shadow: 0 6px 18px rgba(10,30,50,.12); }
+  .zone { padding: 14px; border: 2px dashed transparent; border-radius: 6px; cursor: pointer; transition: background .2s, border-color .2s; }
+  .zone:hover { background: var(--surface-2); }
+  .paper[data-active="top"] .z-top, .paper[data-active="main"] .z-main, .paper[data-active="bottom"] .z-bottom { border-color: var(--cyan); background: var(--cyan-soft); }
+  .p-head { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+  .logo { display: flex; align-items: center; gap: 8px; font-weight: 600; color: var(--head); }
+  .logo svg { width: 34px; height: 34px; }
+  .p-title { font-family: var(--font-display); font-weight: 800; font-size: 1.5rem; color: var(--head); }
+  .p-fields { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px 16px; margin-top: 12px; }
+  .p-fields label, .p-notes label { display: grid; gap: 2px; font-size: .88rem; color: var(--muted); }
+  .paper input[type="text"], .paper input[type="number"], .paper textarea { width: 100%; padding: 5px 6px; background: var(--surface); border: 0; border-bottom: 1.5px dashed var(--line); border-radius: 0; color: var(--ink); }
+  .paper textarea { height: 64px; resize: vertical; border: 1.5px dashed var(--line); border-radius: 6px; }
+  .tbl-wrap { overflow-x: auto; }
+  table { width: 100%; min-width: 480px; border-collapse: collapse; font-size: .95rem; }
+  th { background: var(--navy); color: var(--navy-ink); padding: 8px 10px; font-weight: 600; text-align: center; }
+  td { padding: 4px 6px; border-bottom: 1px solid var(--line); text-align: center; }
+  td input { text-align: center; }
+  td.tot, .nums { font-variant-numeric: tabular-nums; direction: ltr; unicode-bidi: isolate; }
+  input[type="number"] { direction: ltr; font-variant-numeric: tabular-nums; }
+  .p-bottom { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+  .pay label { display: flex; gap: 8px; align-items: center; cursor: pointer; }
+  .pay label + label { margin-top: 4px; }
+  .sumrow { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 3px 0; }
+  .sumrow input { width: 5.5em; text-align: center; }
+  .sumrow.final { margin-top: 6px; padding: 6px 10px; background: var(--gold); color: var(--on-gold); border-radius: 6px; font-weight: 600; }
+  .p-notes { grid-column: 1 / -1; }
+  .small { font-size: .88rem; color: var(--muted); }
+
+  /* result */
+  .score { display: flex; flex-wrap: wrap; align-items: center; gap: 24px; }
+  .ring { position: relative; width: 132px; height: 132px; flex: none; }
+  .ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+  .ring .track { stroke: var(--surface-2); }
+  .ring .val { stroke: var(--gold); transition: stroke-dashoffset .6s; }
+  .ring b { position: absolute; inset: 0; display: grid; place-items: center; font-family: var(--font-display); font-size: 1.9rem; color: var(--head); direction: ltr; }
+  .review { display: grid; gap: 12px; margin-top: 22px; }
+  .rv { padding: 14px 16px; border-radius: 12px; background: var(--surface-2); }
+  .rv h3 { font-size: 1rem; font-weight: 600; color: var(--head); }
+  .rv p { font-size: .95rem; }
+
+  .foot { padding-block: 4px 36px; color: var(--muted); font-size: .88rem; }
+
+  @media (prefers-reduced-motion: reduce) { * { transition: none !important; scroll-behavior: auto !important; } }
+</style>
+
+<div id="app" dir="rtl" lang="ar">
+  <header class="band">
+    <div class="wrap head">
+      <div class="head-text">
+        <div class="eyebrow">الدرس الثالث</div>
+        <h1>نماذج الأعمال</h1>
+        <div class="en">Business Forms</div>
+      </div>
+    </div>
+  </header>
+  <div class="wrap">
+    <nav class="phases" id="phases" aria-label="مراحل الدرس"></nav>
+    <main class="stage" id="stage"></main>
+    <p class="foot">مبني على الدرس الثالث: نماذج الأعمال.</p>
+  </div>
+</div>
+
+<script>
+(function () {
+  var AR = function (n) { return Number(n).toLocaleString('ar-EG'); };
+  var LET = ['أ', 'ب', 'ج', 'د'];
+  var RM = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var warm = [
+    { q: 'ما الغرض الرئيس من أي استمارة أو استبانة؟',
+      o: ['تزيين الصفحة بالألوان', 'جمع معلومات بطريقة منظمة', 'تشغيل الألعاب', 'حذف الملفات القديمة'], a: 1,
+      why: 'النموذج وثيقة منظمة تُستخدم لجمع المعلومات بطريقة منطقية وذات مغزى.' },
+    { q: 'أي الطريقتين أسرع في جمع إجابات عدد كبير من الطلبة وتحليلها؟',
+      o: ['نموذج ورقي نجمع أوراقه باليد', 'كتابة الإجابات في دفتر', 'نموذج إلكتروني عبر الإنترنت', 'سؤال كل طالب شفهيًا'], a: 2,
+      why: 'النماذج عبر الإنترنت تُعبأ وتُخزَّن وتُحلَّل تلقائيًا، وسترى ذلك في الشرح.' },
+    { q: 'قبل تصميم أي نموذج، ما أول سؤال تطرحه على نفسك؟',
+      o: ['ما أجمل لون للخط؟', 'ما الغرض من النموذج؟', 'كم صفحة سيُطبع؟', 'أين سأحفظ النموذج؟'], a: 1,
+      why: 'معرفة الغرض من النموذج والمشكلة التي يحلها تحدد احتياجات التصميم.' }
+  ];
+
+  var quiz = [
+    { q: 'أي مما يلي يُعد من نماذج الأعمال وإن لم يبدُ نموذجًا تقليديًا؟',
+      o: ['رسالة بريد إلكتروني شخصية', 'الشيك البنكي', 'صورة التقطتها بهاتفك', 'قصيدة كتبتها'], a: 1,
+      why: 'الشيك البنكي وثيقة منظمة نملأ بياناتها بترتيب محدد، لذلك يُعد نموذجًا حتى لو لم يبدُ كذلك.' },
+    { q: 'أي مما يلي يميز النماذج التي تُنشأ عبر الإنترنت؟',
+      o: ['تُعبأ وتُخزَّن وتُحلَّل تلقائيًا', 'لا تحتاج إلى اتصال بالإنترنت لتعبئتها', 'تتطلب نقل بياناتها إلى تطبيقات أخرى لتحليلها', 'لا تُستخدم إلا مطبوعة على الورق'], a: 0,
+      why: 'النماذج المطبوعة هي التي لا تشترط الاتصال بالإنترنت وتحتاج إلى نقل بياناتها لتحليلها. أما النماذج عبر الإنترنت فتتم تعبئتها وتخزينها وتحليلها تلقائيًا.' },
+    { q: 'أي إجراء يُعد من مرحلة التخطيط لنموذج جمع البيانات؟',
+      o: ['تصدير النموذج للاستخدام', 'الاحتفاظ بالنسخ السابقة لقالب النموذج', 'تحديد عدد المرات التي يجب فيها إعادة ملء النموذج', 'إضافة مساحة للتعليقات'], a: 2,
+      why: 'تحديد عدد مرات إعادة الملء (يوميًا، أسبوعيًا، شهريًا) من خطوات التخطيط. التصدير والاحتفاظ بالنسخ السابقة من مرحلة الاختبار، ومساحة التعليقات من مرحلة التصميم.' },
+    { q: 'كيف تكتب أسئلة النموذج عند تصميمه؟',
+      o: ['أضع عدة أسئلة في حقل واحد لتوفير المساحة', 'أستخدم عبارات معقدة ليبدو النموذج رسميًا', 'أحذف مساحة التعليقات لتقليل الحقول', 'أكتبها بأسلوب بسيط ومباشر وأطرح سؤالًا واحدًا في كل حقل'], a: 3,
+      why: 'من إرشادات التصميم كتابة الأسئلة بأسلوب بسيط ومباشر وتجنب طرح عدة أسئلة في حقل واحد.' },
+    { q: 'ما الجزء الأهم في تصميم نموذج الشراء؟',
+      o: ['شعار الشركة في أعلى النموذج', 'جدول طلب المنتجات', 'الملاحظات أسفل النموذج', 'عنوان النموذج'], a: 1,
+      why: 'يملأ العميل الجدول بالمنتجات وكمياتها وسعر الوحدة والسعر الإجمالي، لذلك هو الجزء الأهم في هذا النموذج.' }
+  ];
+
+  var S = { phase: 'intro', i: 0, sec: 0, warm: [], quiz: [], checks: {}, tab: { what: 'a', data: 'print' }, zone: 'top' };
+  var stage = document.getElementById('stage');
+  var phasesEl = document.getElementById('phases');
+
+  /* ---------- lesson sections ---------- */
+  function checklist(key, items) {
+    var st = S.checks[key] || (S.checks[key] = items.map(function () { return false; }));
+    return '<div class="cl" data-key="' + key + '"><p class="small" style="margin-bottom:8px">علّم كل بند بعد أن تفهمه.</p>' +
+      items.map(function (t, i) {
+        return '<label class="check"><input type="checkbox" data-k="' + key + '" data-i="' + i + '"' + (st[i] ? ' checked' : '') + '><span>' + t + '</span></label>';
+      }).join('') + '<p class="cl-count" id="cc-' + key + '">' + counter(key) + '</p></div>';
+  }
+  function counter(key) {
+    var st = S.checks[key] || [];
+    var n = st.filter(Boolean).length;
+    return n === st.length ? 'أحسنت، راجعت كل البنود.' : 'علّمت ' + AR(n) + ' من ' + AR(st.length);
+  }
+  function tabs(group, items) {
+    var cur = S.tab[group];
+    return '<div class="tabs" role="tablist">' + items.map(function (t) {
+      return '<button class="tab" role="tab" data-act="tab" data-g="' + group + '" data-t="' + t.id + '" aria-selected="' + (cur === t.id) + '">' + t.label + '</button>';
+    }).join('') + '</div>' + items.map(function (t) {
+      return '<div class="panel" data-panel="' + group + '" data-id="' + t.id + '"' + (cur === t.id ? '' : ' hidden') + '>' + t.html + '</div>';
+    }).join('');
+  }
+  var infoIcon = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 11v6M12 7.5v.01"/></svg>';
+
+  function secWhat() {
+    return '<h2>ما نموذج الأعمال؟ <span class="en">What is a Business Form?</span></h2>' +
+      '<p>نماذج الأعمال أدوات مهمة للعمليات الإدارية التي تتطلب جمع بيانات من العملاء أو الطلبة أو الموظفين أو المواطنين، أو أي مجموعة مرتبطة بشركة أو مدرسة أو مؤسسة. وهي تسهّل استرجاع هذه البيانات واستخدامها مستقبلًا.</p>' +
+      '<p>النموذج وثيقة منظمة بترتيب محدد، تُستخدم لجمع المعلومات بطريقة منطقية وذات مغزى. وتأتي النماذج في نسخ رقمية أو مطبوعة.</p>' +
+      tabs('what', [
+        { id: 'a', label: 'نماذج مألوفة', html: '<p style="margin-bottom:10px">أمثلة على نماذج نعرفها بسهولة:</p><ul class="tags"><li>طلب الشراء</li><li>طلب الخدمة</li><li>الاستبانة</li><li>الإقرار الضريبي</li></ul>' },
+        { id: 'b', label: 'نماذج لا تبدو نماذج', html: '<p style="margin-bottom:10px">نملأ هذه الوثائق أحيانًا دون أن ندرك أنها نماذج:</p><ul class="dots"><li>الشيك البنكي</li><li>اتفاقية استخدام برنامج ما</li><li>قبول ملفات تعريف الارتباط على مواقع الإنترنت</li><li>استمارة طلب المشاركة في حدث أو منظمة أو برنامج</li></ul>' }
+      ]);
+  }
+  function secData() {
+    return '<h2>نماذج جمع البيانات <span class="en">Data Collection Forms</span></h2>' +
+      '<p>يهدف استخدام النماذج إلى جمع البيانات التي تحتاجها الشركة أو المؤسسة، ثم تحليل العمليات وجمع المعلومات منها. تحتوي نماذج جمع البيانات على أسئلة يجيب عنها المستخدمون إما عبر الإنترنت أو على الورق.</p>' +
+      '<p>من الأمثلة عليها: <strong>نموذج الشراء</strong> و<strong>نموذج استطلاع الرأي</strong>.</p>' +
+      tabs('data', [
+        { id: 'print', label: 'النموذج المطبوع', html: '<ul class="dots"><li>لا يشترط الاتصال بالإنترنت لتعبئته.</li><li>تُنقل بياناته إلى تطبيقات أخرى لتحليلها.</li></ul>' },
+        { id: 'online', label: 'النموذج عبر الإنترنت', html: '<ul class="dots"><li>يُعبأ عبر الإنترنت.</li><li>تُخزَّن بياناته وتُحلَّل تلقائيًا.</li></ul>' }
+      ]) +
+      '<div class="tip">' + infoIcon + '<p>جمع البيانات من خلال نماذج عبر الإنترنت يساعد في تقليل استخدام الورق، ويحافظ على البيئة.</p></div>';
+  }
+  function secPlan() {
+    return '<h2>أولًا: التخطيط <span class="en">Planning to Create a Data Collection Form</span></h2>' +
+      '<p>قبل البدء في إنشاء النموذج، اطرح على نفسك أسئلة أولية:</p>' +
+      '<ul class="ask"><li>ما الغرض من النموذج؟</li><li>ما المشكلة التي يحلها؟</li><li>من سيملأ النموذج؟</li><li>من سيقيّم البيانات؟</li></ul>' +
+      '<p>الإجابات تساعدك على التركيز على احتياجات التصميم، ومعرفة من سيملأ النموذج ومن سيقيّم بياناته توفر الوقت عند تحليل النتائج. بعد ذلك أنجز خطوات التخطيط الآتية:</p>' +
+      checklist('plan', [
+        'حدّد البيانات التي يجب تضمينها في النموذج.',
+        'اطلب المشورة بشأن تصميم النموذج من الأشخاص ذوي الخبرة.',
+        'حدّد الفئة التي ستشارك في تعبئة النموذج وعدد المشاركين.',
+        'حدّد عدد المرات التي يجب فيها إعادة ملء النموذج (يوميًا، أسبوعيًا، شهريًا، وما إلى ذلك).'
+      ]);
+  }
+  function secDesign() {
+    return '<h2>ثانيًا: تصميم النموذج</h2>' +
+      '<p>بعد التخطيط، صمّم النموذج مراعيًا الإرشادات الآتية:</p>' +
+      checklist('design', [
+        'ابدأ بعنوان وصفي للنموذج، وأضف تعليمات واضحة لكيفية تعبئته.',
+        'وفّر حقولًا لإدخال المعلومات ذات الصلة، مثل: اسم المنتج، ومرحلة المعالجة، ورقم الدفعة.',
+        'حدّد المدة الزمنية التي يجب ملء النموذج فيها (يوميًا، أسبوعيًا، أو في كل نوبة عمل).',
+        'اكتب الأسئلة بأسلوب بسيط ومباشر، وتجنب طرح عدة أسئلة في حقل واحد.',
+        'وفّر مساحة لاسم المستجيب أو الأحرف الأولى منه، ومساحة للتعليقات، وللتواريخ (اليوم / الشهر / السنة).',
+        'قسّم النموذج، إذا لزم الأمر، إلى أجزاء لتجميع البيانات ذات الصلة في كل قسم وفقًا لطبيعتها.',
+        'وفّر مساحة كافية للإجابة عن الأسئلة المفتوحة.'
+      ]);
+  }
+  function secTest() {
+    return '<h2>ثالثًا: اختبار النموذج</h2>' +
+      '<p>لا تعتمد النموذج قبل أن تجرّبه:</p>' +
+      checklist('test', [
+        'اختبر نماذج جمع البيانات مع أشخاص مختلفين لحل أي مشاكل أو اختلافات في الاستخدام.',
+        'عند إجراء التغييرات، احتفظ بالنسخ السابقة لقالب النموذج.',
+        'تأكد من أن النموذج ذو مظهر احترافي، ثم صدّره للاستخدام.'
+      ]);
+  }
+  var zones = {
+    top: ['الجزء العلوي', 'يضم عنوان النموذج وشعار الشركة ومعلومات الشحن.'],
+    main: ['الجزء الرئيس: طلب المنتجات', 'جدول يملؤه العميل بالمنتجات المطلوبة وكمياتها وسعر الوحدة والسعر الإجمالي. هو أهم جزء في تصميم هذا النموذج.'],
+    bottom: ['الجزء السفلي', 'يضم طرق الدفع والسعر الإجمالي والملاحظات الأخرى.']
+  };
+  function secBuy() {
+    var rows = [['دفتر ملاحظات', 3, 4], ['علبة أقلام حبر', 2, 6], ['ملف أرشيف', 5, 2], ['', '', '']];
+    var z = S.zone;
+    return '<h2>إنشاء نموذج شراء <span class="en">Create a Purchase Form</span></h2>' +
+      '<p>نموذج الشراء أحد أنواع نماذج جمع البيانات، يستخدمه العملاء لطلب البضائع من تاجر الجملة أو الشركة المصنعة أو بائع التجزئة. وتستخدمه غالبًا الشركات والمؤسسات التي تشتري المنتجات بكميات كبيرة.</p>' +
+      '<p>أهم جزء في هذا النموذج هو الجدول الذي يملؤه العميل ببيانات المنتجات المطلوبة وكمياتها وسعر الوحدة والسعر الإجمالي. أما عنوان النموذج وشعار الشركة ومعلومات الشحن وطرق الدفع والملاحظات فتوضع في الجزء العلوي والسفلي.</p>' +
+      '<p class="sub">اختر جزءًا من النموذج لتعرف وظيفته</p>' +
+      '<div class="seg" id="zoneSeg">' + ['top', 'main', 'bottom'].map(function (k) {
+        return '<button data-act="zone" data-z="' + k + '" aria-pressed="' + (z === k) + '">' + zones[k][0] + '</button>';
+      }).join('') + '</div>' +
+      '<div class="zone-note" id="zoneNote" aria-live="polite"><strong>' + zones[z][0] + '.</strong> ' + zones[z][1] + '</div>' +
+      '<div class="paper" id="paper" data-active="' + z + '">' +
+        '<div class="zone z-top" data-z="top"><div class="p-head"><div class="logo"><svg viewBox="0 0 34 34" aria-hidden="true"><circle cx="17" cy="17" r="16" fill="var(--navy)"/><path d="M10 18l5 5 9-11" fill="none" stroke="var(--gold)" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>اسم الشركة</div><div class="p-title">نموذج شراء</div></div>' +
+          '<div class="p-fields"><label>رقم الطلب<input type="text" id="f-no" value="1042" dir="ltr"></label><label>التاريخ (اليوم / الشهر / السنة)<input type="text" id="f-date" placeholder="07 / 11 / 2026" dir="ltr"></label><label>الشحن إلى<input type="text" id="f-to" placeholder="اسم العميل والعنوان"></label></div></div>' +
+        '<div class="zone z-main" data-z="main"><div class="tbl-wrap"><table><thead><tr><th>الرقم</th><th>المنتج</th><th>الكمية</th><th>سعر الوحدة</th><th>السعر الإجمالي</th></tr></thead><tbody>' +
+          rows.map(function (r, i) {
+            return '<tr data-row><td>' + AR(i + 1) + '</td><td><input type="text" value="' + r[0] + '" aria-label="المنتج ' + AR(i + 1) + '"></td><td><input type="number" min="0" class="q" value="' + r[1] + '" aria-label="الكمية ' + AR(i + 1) + '"></td><td><input type="number" min="0" step="0.5" class="u" value="' + r[2] + '" aria-label="سعر الوحدة ' + AR(i + 1) + '"></td><td class="tot">0</td></tr>';
+          }).join('') + '</tbody></table></div></div>' +
+        '<div class="zone z-bottom" data-z="bottom"><div class="p-bottom">' +
+          '<div class="pay"><span class="small">طريقة الدفع</span><label><input type="radio" name="pay" checked> بطاقة الائتمان</label><label><input type="radio" name="pay"> نقدًا</label></div>' +
+          '<div><div class="sumrow"><span>الإجمالي</span><span class="nums" id="sub">0</span></div><div class="sumrow"><span>سعر الشحن</span><input type="number" id="ship" min="0" value="2" aria-label="سعر الشحن"></div><div class="sumrow final"><span>المجموع</span><span class="nums" id="grand">0</span></div></div>' +
+          '<div class="p-notes"><label>ملاحظات<textarea id="notes" placeholder="اكتب أي تعليمات إضافية للطلب"></textarea></label></div>' +
+        '</div></div>' +
+      '</div>' +
+      '<p class="small">بيانات الجدول أمثلة توضيحية، عدّل الكميات والأسعار وشاهد كيف يُحسب السعر الإجمالي.</p>';
+  }
+
+  var secs = [
+    { nav: 'ما النموذج؟', render: secWhat },
+    { nav: 'جمع البيانات', render: secData },
+    { nav: 'التخطيط', render: secPlan },
+    { nav: 'التصميم', render: secDesign },
+    { nav: 'الاختبار', render: secTest },
+    { nav: 'نموذج الشراء', render: secBuy }
+  ];
+
+  /* ---------- views ---------- */
+  function qView(q, idx, total, chosen, kind) {
+    var done = chosen !== undefined;
+    var pct = ((idx + (done ? 1 : 0)) / total) * 100;
+    var h = '<div class="qmeta"><span>' + (kind === 'warm' ? 'سؤال تمهيدي ' : 'سؤال ختامي ') + AR(idx + 1) + ' من ' + AR(total) + '</span><div class="bar"><i style="width:' + pct + '%"></i></div></div>' +
+      '<h2>' + q.q + '</h2><div class="opts">' +
+      q.o.map(function (t, k) {
+        var cls = '';
+        if (done) cls = k === q.a ? ' ok' : (k === chosen ? ' bad' : ' dim');
+        return '<button class="opt' + cls + '" data-act="pick" data-k="' + k + '"' + (done ? ' disabled' : '') + '><span class="lt">' + LET[k] + '</span><span>' + t + '</span></button>';
+      }).join('') + '</div>';
+    if (done) {
+      var right = chosen === q.a;
+      var lead = right ? 'إجابة صحيحة.' : 'الإجابة الصحيحة: ' + LET[q.a] + '. ' + q.o[q.a];
+      var last = idx === total - 1;
+      var label = kind === 'warm' ? (last ? 'ابدأ الشرح' : 'السؤال التالي') : (last ? 'اعرض النتيجة' : 'السؤال التالي');
+      h += '<div class="fb ' + (right ? 'ok' : 'bad') + '" id="fb" tabindex="-1"><strong>' + lead + '</strong>' + q.why + '</div>' +
+        '<div class="actions"><button class="btn gold push" data-act="next">' + label + ' &larr;</button></div>';
+    }
+    return h;
+  }
+
+  function introView() {
+    return '<h2>ماذا ستتعلم في هذا الدرس؟</h2>' +
+      '<ul class="goals"><li>تتعرف على نموذج الأعمال وأنواعه.</li><li>تفرّق بين النماذج المطبوعة والنماذج عبر الإنترنت.</li><li>تخطط لنموذج جمع بيانات وتصممه وتختبره.</li><li>تتعرف على أجزاء نموذج الشراء ووظيفة كل جزء.</li></ul>' +
+      '<div class="flow"><div><strong>١. تمهيد</strong><span>' + AR(warm.length) + ' أسئلة اختيارية قصيرة</span></div><div><strong>٢. الشرح</strong><span>' + AR(secs.length) + ' أقسام تفاعلية</span></div><div><strong>٣. الختام</strong><span>' + AR(quiz.length) + ' أسئلة اختيارية</span></div></div>' +
+      '<div class="actions"><button class="btn gold" data-act="start">ابدأ بالأسئلة التمهيدية &larr;</button></div>';
+  }
+
+  function learnView() {
+    var last = S.sec === secs.length - 1;
+    return '<div class="secnav" role="group" aria-label="أقسام الدرس">' + secs.map(function (s, k) {
+      return '<button class="chip" data-act="sec" data-s="' + k + '"' + (k === S.sec ? ' aria-current="step"' : '') + '><i>' + AR(k + 1) + '</i>' + s.nav + '</button>';
+    }).join('') + '</div><div class="sec">' + secs[S.sec].render() + '</div>' +
+      '<div class="actions"><button class="btn ghost" data-act="secprev"' + (S.sec === 0 ? ' disabled' : '') + '>&rarr; السابق</button>' +
+      '<button class="btn ' + (last ? 'gold' : '') + ' push" data-act="secnext">' + (last ? 'انتقل إلى الأسئلة الختامية' : 'التالي') + ' &larr;</button></div>';
+  }
+
+  function resultView() {
+    var score = S.quiz.reduce(function (n, c, i) { return n + (c === quiz[i].a ? 1 : 0); }, 0);
+    var C = 2 * Math.PI * 54, off = C * (1 - score / quiz.length);
+    var msg = score === 5 ? 'ممتاز! أتقنت الدرس.' : score === 4 ? 'أحسنت، أنت قريب جدًا من الإتقان.' : score === 3 ? 'جيد، راجع الأجزاء التي أخطأت فيها.' : 'راجع الشرح ثم أعد المحاولة.';
+    var wrong = quiz.map(function (q, i) { return { q: q, i: i }; }).filter(function (x) { return S.quiz[x.i] !== x.q.a; });
+    return '<h2>نتيجتك في الأسئلة الختامية</h2><div class="score" style="margin-top:16px"><div class="ring"><svg viewBox="0 0 132 132" aria-hidden="true"><circle class="track" cx="66" cy="66" r="54" fill="none" stroke-width="12"/><circle class="val" cx="66" cy="66" r="54" fill="none" stroke-width="12" stroke-linecap="round" stroke-dasharray="' + C.toFixed(1) + '" stroke-dashoffset="' + off.toFixed(1) + '"/></svg><b>' + score + ' / ' + quiz.length + '</b></div><div><p style="font-weight:600;font-size:1.15rem">' + msg + '</p><p class="lead">أجبت إجابة صحيحة عن ' + AR(score) + ' من ' + AR(quiz.length) + ' أسئلة.</p></div></div>' +
+      (wrong.length ? '<div class="review"><p class="sub">أسئلة تحتاج إلى مراجعة</p>' + wrong.map(function (x) {
+        return '<div class="rv"><h3>' + x.q.q + '</h3><p><strong>إجابتك:</strong> ' + x.q.o[S.quiz[x.i]] + '</p><p><strong>الإجابة الصحيحة:</strong> ' + x.q.o[x.q.a] + '</p><p class="lead">' + x.q.why + '</p></div>';
+      }).join('') + '</div>' : '') +
+      '<div class="actions"><button class="btn ghost" data-act="review">راجع الشرح</button><button class="btn gold push" data-act="retry">أعد الأسئلة</button></div>';
+  }
+
+  /* ---------- render ---------- */
+  function phasesView() {
+    var cur = { intro: 0, warm: 1, learn: 2, quiz: 3, result: 3 }[S.phase];
+    var items = ['تمهيد', 'الشرح', 'الختام'];
+    phasesEl.innerHTML = items.map(function (t, k) {
+      var n = k + 1, cls = n < cur || (S.phase === 'result' && n === 3) ? 'done' : (n === cur ? 'on' : '');
+      return (k ? '<span class="ph-line"></span>' : '') + '<span class="ph ' + cls + '"' + (n === cur ? ' aria-current="step"' : '') + '><b>' + (cls === 'done' ? '&#10003;' : AR(n)) + '</b>' + t + '</span>';
+    }).join('');
+  }
+  function render() {
+    phasesView();
+    var h = '';
+    if (S.phase === 'intro') h = introView();
+    else if (S.phase === 'warm') h = qView(warm[S.i], S.i, warm.length, S.warm[S.i], 'warm');
+    else if (S.phase === 'learn') h = learnView();
+    else if (S.phase === 'quiz') h = qView(quiz[S.i], S.i, quiz.length, S.quiz[S.i], 'quiz');
+    else h = resultView();
+    stage.innerHTML = h;
+    if (S.phase === 'learn' && S.sec === 5) recalc();
+  }
+  function go() {
+    render();
+    stage.scrollIntoView({ block: 'start', behavior: RM ? 'auto' : 'smooth' });
+  }
+
+  /* ---------- purchase form maths ---------- */
+  function fmt(n) { return n.toLocaleString('en-US', { maximumFractionDigits: 2 }); }
+  function recalc() {
+    var sub = 0;
+    stage.querySelectorAll('[data-row]').forEach(function (r) {
+      var q = parseFloat(r.querySelector('.q').value) || 0;
+      var u = parseFloat(r.querySelector('.u').value) || 0;
+      var t = q * u; sub += t;
+      r.querySelector('.tot').textContent = fmt(t);
+    });
+    var ship = parseFloat((document.getElementById('ship') || {}).value) || 0;
+    var s = document.getElementById('sub'), g = document.getElementById('grand');
+    if (s) s.textContent = fmt(sub);
+    if (g) g.textContent = fmt(sub + ship);
+  }
+  function setZone(z) {
+    S.zone = z;
+    var paper = document.getElementById('paper');
+    if (!paper) return;
+    paper.dataset.active = z;
+    document.querySelectorAll('#zoneSeg button').forEach(function (b) { b.setAttribute('aria-pressed', String(b.dataset.z === z)); });
+    document.getElementById('zoneNote').innerHTML = '<strong>' + zones[z][0] + '.</strong> ' + zones[z][1];
+  }
+
+  /* ---------- events ---------- */
+  stage.addEventListener('click', function (e) {
+    var el = e.target.closest('[data-act]');
+    if (!el) {
+      var zn = e.target.closest('.zone');
+      if (zn && !e.target.closest('input,textarea,label')) setZone(zn.dataset.z);
+      return;
+    }
+    var act = el.dataset.act;
+    if (act === 'start') { S.phase = 'warm'; S.i = 0; go(); }
+    else if (act === 'pick') {
+      var arr = S.phase === 'warm' ? S.warm : S.quiz;
+      arr[S.i] = parseInt(el.dataset.k, 10);
+      render();
+      var fb = document.getElementById('fb'); if (fb) fb.focus({ preventScroll: true });
+    }
+    else if (act === 'next') {
+      if (S.phase === 'warm') {
+        if (S.i < warm.length - 1) { S.i++; } else { S.phase = 'learn'; S.sec = 0; }
+      } else {
+        if (S.i < quiz.length - 1) { S.i++; } else { S.phase = 'result'; }
+      }
+      go();
+    }
+    else if (act === 'sec') { S.sec = parseInt(el.dataset.s, 10); go(); }
+    else if (act === 'secprev') { if (S.sec > 0) { S.sec--; go(); } }
+    else if (act === 'secnext') {
+      if (S.sec < secs.length - 1) S.sec++; else { S.phase = 'quiz'; S.i = 0; S.quiz = []; }
+      go();
+    }
+    else if (act === 'tab') {
+      var g = el.dataset.g, t = el.dataset.t; S.tab[g] = t;
+      stage.querySelectorAll('.tab[data-g="' + g + '"]').forEach(function (b) { b.setAttribute('aria-selected', String(b.dataset.t === t)); });
+      stage.querySelectorAll('[data-panel="' + g + '"]').forEach(function (p) { p.hidden = p.dataset.id !== t; });
+    }
+    else if (act === 'zone') { setZone(el.dataset.z); }
+    else if (act === 'retry') { S.phase = 'quiz'; S.i = 0; S.quiz = []; go(); }
+    else if (act === 'review') { S.phase = 'learn'; S.sec = 0; go(); }
+  });
+  stage.addEventListener('change', function (e) {
+    var c = e.target;
+    if (c.matches('input[type="checkbox"][data-k]')) {
+      S.checks[c.dataset.k][parseInt(c.dataset.i, 10)] = c.checked;
+      var cc = document.getElementById('cc-' + c.dataset.k); if (cc) cc.textContent = counter(c.dataset.k);
+    }
+  });
+  stage.addEventListener('input', function (e) {
+    if (e.target.closest('#paper')) recalc();
+  });
+
+  render();
+})();
+</script>
+
+</body></html>
