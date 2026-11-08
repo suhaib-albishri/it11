@@ -1,0 +1,852 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<meta name="claude:viewport-fit-sides" content="cover">
+<title>استطلاع رضا العملاء</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&family=Noto+Kufi+Arabic:wght@600;800&display=swap">
+<style>
+/* Layout: a navy-and-gold ribbon (the book's own cover motif) over one reading column.
+   Three real stages (تمهيد، الشرح، الاختبار) tracked at the top; one card per task. */
+:root{
+  --bg:#eef3f7; --surface:#ffffff; --surface-2:#e4edf4; --ink:#12283c; --muted:#4d6175; --line:#c5d4e0;
+  --brand:#0b4a7a; --on-brand:#ffffff; --brand-soft:#d6e6f2;
+  --gold:#e2b653; --gold-soft:#f6e8bf; --gold-ink:#3a2a05;
+  --good:#1b7a4e; --good-soft:#d8f0e2; --bad:#b0362e; --bad-soft:#f9dcd8; --mid-soft:#f6e8bf;
+  --hero:#0b4a7a; --hero-deep:#062f4d; --hero-ink:#ffffff;
+  --f-display:'Noto Kufi Arabic','IBM Plex Sans Arabic',Tahoma,sans-serif;
+  --f-body:'IBM Plex Sans Arabic','Segoe UI',Tahoma,sans-serif;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0a1a2a; --surface:#10283d; --surface-2:#173550; --ink:#e8f0f7; --muted:#9fb5c8; --line:#2a4962;
+    --brand:#7fbce9; --on-brand:#08243a; --brand-soft:#17395a;
+    --gold:#e8be5f; --gold-soft:#3a3216;
+    --good:#62d19b; --good-soft:#133a2b; --bad:#ff9288; --bad-soft:#47211e; --mid-soft:#3a3216;
+    --hero:#0f3a5d; --hero-deep:#071f33;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0a1a2a; --surface:#10283d; --surface-2:#173550; --ink:#e8f0f7; --muted:#9fb5c8; --line:#2a4962;
+  --brand:#7fbce9; --on-brand:#08243a; --brand-soft:#17395a;
+  --gold:#e8be5f; --gold-soft:#3a3216;
+  --good:#62d19b; --good-soft:#133a2b; --bad:#ff9288; --bad-soft:#47211e; --mid-soft:#3a3216;
+  --hero:#0f3a5d; --hero-deep:#071f33;
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  background:var(--bg); color:var(--ink); font-family:var(--f-body); font-size:16px; line-height:1.8;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+  padding-block:0 56px;
+}
+button,textarea{font-family:inherit}
+h1,h2,h3{font-family:var(--f-display);line-height:1.5;margin:0;text-wrap:balance}
+p{margin:0}
+:focus-visible{outline:3px solid var(--brand);outline-offset:2px}
+.wrap{max-width:900px;margin:0 auto}
+.en{direction:ltr;text-align:right;color:var(--muted);font-size:14px;letter-spacing:.02em;font-family:'IBM Plex Sans Arabic',system-ui,sans-serif}
+.small{font-size:14px;color:var(--muted)}
+
+/* top bar + tracker */
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px 20px;flex-wrap:wrap;padding-block:16px}
+.course{font-size:14px;color:var(--muted)}
+.course span{color:var(--brand);font-weight:700;margin-inline-end:6px}
+.stages{display:flex;gap:6px;list-style:none;margin:0;padding:0}
+.stages li{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted);padding:4px 12px 4px 10px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface)}
+.stages b{width:24px;height:24px;border-radius:50%;display:grid;place-items:center;font-size:13px;background:var(--surface-2);color:var(--muted)}
+.stages li.cur{border-color:var(--brand);color:var(--ink);font-weight:600}
+.stages li.cur b{background:var(--brand);color:var(--on-brand)}
+.stages li.done b{background:var(--good);color:var(--surface)}
+@media (max-width:480px){.stages li:not(.cur) span{display:none}.stages li:not(.cur){padding:4px}}
+
+/* hero */
+.hero{position:relative;overflow:hidden;border-radius:18px;background:var(--hero);color:var(--hero-ink);padding:44px 32px 36px;margin-block:4px 20px}
+.hero::before{content:"";position:absolute;inset:0 auto 0 0;width:36%;background:var(--gold);clip-path:polygon(0 0,100% 0,56% 100%,0 100%)}
+.hero::after{content:"";position:absolute;inset:0 auto 0 15%;width:16%;background:var(--hero-deep);clip-path:polygon(0 0,100% 0,50% 100%)}
+.hero-text{position:relative;z-index:1;max-width:60%;display:grid;gap:10px;justify-items:start}
+.hero .eyebrow{color:var(--gold);font-weight:700;letter-spacing:.04em}
+.hero h1{font-weight:800;font-size:clamp(32px,6vw,52px);line-height:1.35}
+.hero .en{color:#c8dcec;text-align:start}
+.hero .sub{max-width:36ch;color:#e3eef7;margin-block:6px 10px}
+@media (max-width:620px){
+  .hero{padding:48px 20px 28px}
+  .hero::before{inset:0 0 auto 0;width:auto;height:16px;clip-path:polygon(0 0,100% 0,93% 100%,0 100%)}
+  .hero::after{display:none}
+  .hero-text{max-width:100%}
+}
+.road{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px}
+.road li{background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:16px 18px;display:grid;gap:4px;min-width:0}
+.road b{font-family:var(--f-display);color:var(--brand);font-size:17px}
+.road span{color:var(--muted);font-size:15px;line-height:1.7}
+
+/* buttons */
+.btn{font-weight:600;font-size:16px;min-height:46px;padding:10px 22px;border-radius:10px;border:1.5px solid transparent;cursor:pointer;line-height:1.4}
+.btn.primary{background:var(--brand);color:var(--on-brand)}
+.btn.gold{background:var(--gold);color:var(--gold-ink)}
+.btn.ghost{background:transparent;color:var(--brand);border-color:var(--brand)}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.btn.big{font-size:18px;padding:12px 30px}
+.btn:hover:not(:disabled){filter:brightness(1.06)}
+
+/* cards & question UI */
+.card{background:var(--surface);border:1.5px solid var(--line);border-radius:16px;padding:24px;display:grid;gap:18px;min-width:0}
+@media (max-width:480px){.card{padding:18px 14px}}
+.q-meta{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.pill{display:inline-block;font-size:13px;font-weight:600;padding:2px 12px;border-radius:999px;background:var(--brand-soft);color:var(--brand)}
+.pill.gold{background:var(--gold-soft);color:var(--ink)}
+.count{font-size:14px;color:var(--muted);font-variant-numeric:tabular-nums}
+.q-text{font-size:clamp(19px,3.4vw,24px);font-weight:700;line-height:1.7}
+.q-text:focus{outline:none}
+.note{font-size:14px;color:var(--muted)}
+.segs{display:flex;gap:4px}
+.segs i{flex:1;height:6px;border-radius:3px;background:var(--line)}
+.segs i.ok{background:var(--good)}.segs i.half{background:var(--gold)}.segs i.no{background:var(--bad)}.segs i.cur{background:var(--brand)}
+.opts{display:grid;gap:10px}
+.opts.two{grid-template-columns:1fr 1fr}
+.opt{display:flex;align-items:center;gap:12px;width:100%;text-align:start;font-size:16px;color:var(--ink);background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;cursor:pointer;min-height:52px;line-height:1.6}
+.opt:hover:not(:disabled){border-color:var(--brand)}
+.opt:disabled{color:var(--ink);opacity:1;cursor:default}
+.opt .badge{flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--brand-soft);color:var(--brand);font-weight:700;font-size:14px}
+.opt.sel{border-color:var(--brand);background:var(--brand-soft)}
+.opt.right{border-color:var(--good);background:var(--good-soft)}
+.opt.wrong{border-color:var(--bad);background:var(--bad-soft)}
+.opt.right .badge{background:var(--good);color:var(--surface)}
+.opt.wrong .badge{background:var(--bad);color:var(--surface)}
+.opt.tf{justify-content:center;font-size:20px;font-weight:700;min-height:64px;font-family:var(--f-display)}
+.fb{border:1.5px solid var(--line);border-radius:12px;padding:14px 16px;display:grid;gap:6px;background:var(--surface-2)}
+.fb strong{font-family:var(--f-display)}
+.fb.good{border-color:var(--good);background:var(--good-soft)}
+.fb.bad{border-color:var(--bad);background:var(--bad-soft)}
+.fb.part{border-color:var(--gold);background:var(--gold-soft)}
+.fb ul{margin:4px 0 0;padding-inline-start:20px}
+.fb li{margin-block:2px}
+#fb{display:grid;gap:14px}
+#fb:empty{display:none}
+#fb .btn{justify-self:start}
+.actions{display:flex;gap:10px;flex-wrap:wrap}
+
+/* drag & drop */
+.dz{display:grid;gap:12px}
+.dz.match{grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}
+.dz.sort{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.dz.ltr{direction:ltr}
+.dz.ltr .zone{direction:rtl}
+.zone{background:var(--surface);border:1.5px solid var(--line);border-radius:12px;padding:12px;display:flex;flex-direction:column;gap:10px;min-width:0}
+.zone-t{font-weight:600;line-height:1.7}
+.drop{display:flex;flex-wrap:wrap;gap:8px;align-content:flex-start;min-height:56px;padding:8px;border:2px dashed var(--line);border-radius:10px}
+.dz.sort .drop{min-height:110px}
+.pool{background:var(--surface-2);border-radius:12px;padding:12px;display:grid;gap:8px}
+.pool .drop{background:var(--surface);min-height:64px}
+.armed .drop,.pool.armed .drop{border-color:var(--brand)}
+.zone.over .drop,.pool.over .drop{border-color:var(--brand);background:var(--brand-soft)}
+.chip{touch-action:none;-webkit-user-select:none;user-select:none;cursor:grab;font-size:15px;font-weight:500;padding:8px 14px;border-radius:999px;border:1.5px solid var(--brand);background:var(--surface);color:var(--ink);line-height:1.5;text-align:center;max-width:100%}
+.chip.sel{background:var(--brand);color:var(--on-brand)}
+.chip.src{opacity:.35}
+.chip.right{border-color:var(--good);background:var(--good-soft);color:var(--ink)}
+.chip.wrong{border-color:var(--bad);background:var(--bad-soft);color:var(--ink)}
+.chip:disabled{opacity:1;cursor:default;color:var(--ink)}
+.ghost{position:fixed;z-index:1000;pointer-events:none;box-shadow:0 8px 24px rgba(5,30,55,.35);background:var(--brand);color:var(--on-brand);cursor:grabbing}
+
+/* lesson */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px;margin-bottom:16px}
+.step{display:flex;align-items:center;gap:10px;text-align:start;font-size:15px;padding:10px 12px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;line-height:1.5}
+.step b{flex:none;width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:var(--surface-2);color:var(--muted);font-size:14px}
+.step.seen b{background:var(--good);color:var(--surface)}
+.step.on{border-color:var(--brand);background:var(--brand-soft);font-weight:600}
+.step.on b{background:var(--brand);color:var(--on-brand)}
+.sec{background:var(--surface);border:1.5px solid var(--line);border-radius:16px;padding:26px;display:grid;gap:18px;min-width:0}
+@media (max-width:480px){.sec{padding:18px 14px}}
+.sec h2{font-size:clamp(22px,4vw,30px);color:var(--brand)}
+.sec h3{font-size:18px}
+.lead{font-size:17px;max-width:68ch}
+.two{display:grid;grid-template-columns:1.05fr 1fr;gap:20px}
+@media (max-width:760px){.two{grid-template-columns:1fr}}
+.exp,.demo{min-width:0}
+.exp{display:grid;gap:10px;align-content:start}
+.key{background:var(--gold-soft);border-radius:10px;padding:10px 14px;display:grid;gap:2px}
+.key span{font-size:13px;font-weight:700;color:var(--muted)}
+.demo{background:var(--surface-2);border-radius:14px;padding:16px;display:grid;gap:12px;align-content:start}
+.demo-h{font-size:13px;font-weight:700;color:var(--brand);letter-spacing:.03em}
+.demo-body>div{display:grid;gap:12px}
+.dq{font-weight:600}
+.out{min-height:3.2em;font-size:15px;line-height:1.7;padding:8px 12px;border-radius:10px;background:var(--surface)}
+.out.good{background:var(--good-soft)}.out.bad{background:var(--bad-soft)}.out.mid{background:var(--gold-soft)}
+
+.seg{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+.seg-btn{font-size:15px;font-weight:500;padding:8px 14px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;line-height:1.5}
+.seg-btn[aria-selected="true"]{background:var(--brand);border-color:var(--brand);color:var(--on-brand);font-weight:600}
+.mini-seg{display:flex;gap:6px}
+.mini-seg button{font-size:14px;padding:4px 12px;border-radius:999px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.mini-seg button[aria-pressed="true"]{background:var(--brand-soft);border-color:var(--brand);font-weight:600}
+
+.scale{direction:ltr;display:flex;gap:8px;flex-wrap:wrap}
+.sc{width:44px;height:44px;border-radius:50%;border:1.5px solid var(--brand);background:var(--surface);color:var(--ink);font-weight:600;font-size:16px;cursor:pointer;font-variant-numeric:tabular-nums}
+.sc[aria-pressed="true"]{background:var(--brand);color:var(--on-brand)}
+.anch{direction:ltr;display:flex;justify-content:space-between;gap:8px;font-size:13px;color:var(--muted)}
+.anch span:nth-child(2){text-align:center}
+.faces{display:flex;gap:10px;flex-wrap:wrap}
+.face{display:grid;justify-items:center;gap:2px;padding:8px 14px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;font-size:14px}
+.face[aria-pressed="true"]{border-color:var(--brand);background:var(--brand-soft)}
+.f-happy{color:var(--good)}.f-neutral{color:var(--muted)}.f-sad{color:var(--bad)}
+.stars{direction:ltr;display:flex;gap:4px}
+.star{background:none;border:0;padding:2px;cursor:pointer;line-height:0}
+.star svg{fill:var(--line);stroke:var(--muted);stroke-width:1;stroke-linejoin:round}
+.star.on svg{fill:var(--gold);stroke:var(--gold)}
+.formula{background:var(--surface);border-radius:10px;padding:10px 14px;font-size:15px;display:grid;gap:4px}
+.tag{justify-self:start;font-size:12px;font-weight:700;padding:0 10px;border-radius:999px;background:var(--gold-soft)}
+.flow{display:flex;align-items:stretch;gap:8px;flex-wrap:wrap}
+.node{flex:1 1 150px;min-width:0;text-align:start;font-size:15px;font-weight:600;padding:12px 14px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer;line-height:1.6;display:grid;gap:2px}
+.node small{font-size:12px;color:var(--muted);font-weight:700}
+.node[aria-pressed="true"]{border-color:var(--brand);background:var(--brand-soft)}
+.flow-note{background:var(--gold-soft);border-radius:12px;padding:12px 16px;min-height:3.6em}
+textarea{width:100%;min-height:96px;padding:10px 12px;border-radius:10px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font-size:16px;line-height:1.7;resize:vertical}
+.pc{display:grid;gap:6px;font-size:15px}
+.pc b{color:var(--brand);margin-inline-end:6px}
+.tl{display:flex;list-style:none;margin:0;padding:0}
+.tl li{flex:1;text-align:center;position:relative;padding-top:30px;font-size:14px;line-height:1.6;min-width:0}
+.tl li::before{content:"";position:absolute;top:11px;left:0;right:0;height:2px;background:var(--line)}
+.tl li:first-child::before{right:50%}
+.tl li:last-child::before{left:50%}
+.tl li i{position:absolute;top:4px;left:50%;margin-left:-8px;width:16px;height:16px;border-radius:50%;background:var(--brand);z-index:1}
+.tl li.last i{background:var(--gold);box-shadow:0 0 0 4px var(--gold-soft)}
+
+.lnav{display:flex;gap:10px;justify-content:space-between;flex-wrap:wrap;margin-top:16px}
+
+/* builder */
+.build{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+@media (max-width:760px){.build{grid-template-columns:1fr}}
+.bcol{display:grid;gap:12px;align-content:start;min-width:0}
+.goals,.bank{display:grid;gap:8px}
+.bank .opt{flex-wrap:wrap;gap:4px 10px}
+.kind{font-size:12px;font-weight:700;padding:0 10px;border-radius:999px;background:var(--brand-soft);color:var(--brand)}
+.paper{background:var(--surface-2);border-radius:14px;padding:18px;display:grid;gap:12px;align-content:start}
+.paper h4{font-family:var(--f-display);font-size:17px;margin:0;line-height:1.6}
+.paper ol{margin:0;padding-inline-start:22px;display:grid;gap:8px}
+.paper li span.kind{margin-inline-start:8px}
+.msg{padding:10px 14px;border-radius:10px;font-size:15px;background:var(--surface)}
+.msg.good{background:var(--good-soft)}.msg.bad{background:var(--bad-soft)}
+
+/* result */
+.res{display:grid;grid-template-columns:auto 1fr;gap:24px;align-items:center}
+@media (max-width:560px){.res{grid-template-columns:1fr;justify-items:center;text-align:center}}
+.ring{width:170px;height:170px}
+.ring-bg{stroke:var(--line)}
+.ring-fg{stroke:var(--brand);stroke-linecap:round}
+.ring-n{fill:var(--ink);font-family:var(--f-display);font-size:30px;font-weight:800}
+.ring-s{fill:var(--muted);font-size:11px}
+.bars{display:grid;gap:10px}
+.bar{display:grid;grid-template-columns:130px 1fr auto;gap:10px;align-items:center;font-size:14px}
+.bar div{height:10px;border-radius:5px;background:var(--line);overflow:hidden}
+.bar div i{display:block;height:100%;background:var(--brand)}
+.miss{display:grid;gap:10px}
+.miss article{border:1.5px solid var(--line);border-radius:12px;padding:12px 14px;display:grid;gap:4px}
+.miss article p:first-child{font-weight:600}
+
+@media (prefers-reduced-motion:no-preference){
+  .ring-fg{transition:stroke-dashoffset .9s ease}
+  .opt,.btn,.chip,.node{transition:background-color .15s,border-color .15s}
+}
+</style>
+
+<div class="wrap">
+  <div class="top">
+    <p class="course"><span>الدرس الرابع</span>استطلاع رضا العملاء</p>
+    <ol class="stages" id="stages" aria-label="مراحل الدرس"></ol>
+  </div>
+  <main id="main"></main>
+</div>
+
+<script>
+(function(){
+'use strict';
+document.documentElement.lang='ar';
+document.documentElement.dir='rtl';
+
+/* ---------- helpers ---------- */
+var $=function(s,r){return (r||document).querySelector(s)};
+var $$=function(s,r){return Array.prototype.slice.call((r||document).querySelectorAll(s))};
+var AR=function(v){return String(v).replace(/\d/g,function(d){return '٠١٢٣٤٥٦٧٨٩'[d]}).replace('.','٫')};
+var h=function(html){var t=document.createElement('template');t.innerHTML=html.trim();return t.content.firstElementChild};
+var main=$('#main');
+var LET=['أ','ب','ج','د'];
+function shuffle(a){a=a.slice();for(var i=a.length-1;i>0;i--){var j=Math.floor(Math.random()*(i+1));var t=a[i];a[i]=a[j];a[j]=t}return a}
+function btn(label,cls,fn){var b=h('<button type="button" class="btn '+cls+'">'+label+'</button>');b.onclick=fn;return b}
+function setOut(el,html,kind){el.innerHTML=html;el.className='out '+(kind||'')}
+function top0(){window.scrollTo(0,0)}
+
+/* ---------- content ---------- */
+var PRE=[
+ {q:'ما الهدف الرئيسي من استطلاع رضا العملاء؟',
+  options:['زيادة عدد الموظفين في الشركة','فهم آراء العملاء في المنتجات والخدمات لتحسينها','تحديد أسعار المنتجات فقط','إعلان العروض الجديدة للجمهور'],answer:1,
+  why:'استطلاع رضا العملاء نموذج لجمع البيانات يساعد المؤسسات على فهم آراء عملائها في منتجاتها وخدماتها، بهدف تحسينها.'},
+ {q:'أي نوع من الأسئلة يمنح المشاركين حرية كتابة ما يريدون؟',
+  options:['أسئلة الاختيار من متعدد','الأسئلة الثنائية (نعم / لا)','الأسئلة المفتوحة','مقياس التصنيف الرقمي'],answer:2,
+  why:'الأسئلة المفتوحة تتيح للمشارك الكتابة بحرية. سنتعرف في الدرس إلى مزاياها وتحدياتها.'},
+ {q:'برأيك، متى يكون إرسال الاستطلاع مفيدًا لفهم تجربة العميل بعمق؟',
+  options:['في مراحل مهمة من رحلة العميل مع المؤسسة','مرة واحدة كل عشر سنوات','عندما يلغي العميل حسابه فقط','لا حاجة إلى إرسال استطلاعات'],answer:0,
+  why:'هذا ما تفعله استطلاعات النقاط المحورية: تُرسَل في مراحل مهمة من رحلة العميل. ستجرّبها في الشرح.'}
+];
+
+var TYPES=[
+ {id:'csat',ar:'درجة رضا العملاء',en:'Customer Satisfaction Score (CSAT)',
+  text:'تتكوّن من أسئلة بسيطة إجاباتها بنعم أو لا، أو أسئلة تطلب من العميل كتابة إجابته. وتفيد في كشف الجوانب السلبية التي تحتاج إلى تحسين فوري.',
+  key:'أسئلة بسيطة تكشف ما يحتاج إلى تحسين فوري.'},
+ {id:'nps',ar:'صافي نقاط الترويج',en:'Net Promoter Score (NPS)',
+  text:'يعتمد على سؤال واحد يطلب من العميل تقييم منتج أو مؤسسة، ويقيس احتمالية أن يوصي بها أحد أقاربه أو أصدقائه. ثم تُقارَن آراء المنتقدين بآراء المروّجين: كلما زاد صافي نقاط الترويج زاد معدل رضا العملاء.',
+  key:'سؤال واحد يقيس احتمالية التوصية.'},
+ {id:'ces',ar:'نقاط جهد العميل',en:'Customer Effort Score (CES)',
+  text:'يقيس مدى سهولة تجربة العميل والوقت الذي يستغرقه في استخدام المنتج أو إصلاح مشكلة عبر خدمة العملاء. تُسجَّل الإجابات على مقياس من خمس نقاط، تتراوح خياراته من «أوافق بشدة» إلى «لا أوافق على الإطلاق».',
+  key:'يقيس سهولة التجربة والوقت المستغرق.'},
+ {id:'ms',ar:'استطلاعات النقاط المحورية',en:'Milestone surveys',
+  text:'تُوزَّع في مراحل مهمة من رحلة العميل للحصول على رؤى أعمق عن تجربته. يمكن تحديد هذه المراحل بحسب الوقت، مثل إرسال استطلاع بعد ٦٠ يومًا من التسجيل، أو بحسب تجارب محددة، مثل الإرسال بعد اكتمال عدد من العملاء الجدد.',
+  key:'تُرسَل في مراحل محددة من رحلة العميل.'}
+];
+
+var QTYPES=[
+ {id:'mcq',ar:'أسئلة الاختيار من متعدد',
+  text:'تُستخدم عندما يكون هناك عدد محدود من الإجابات التي يمكن للمستجيب تقديمها.',
+  key:'نتائجها سهلة الجدولة، وتتطلب جهدًا أقل للإجابة.'},
+ {id:'rate',ar:'أسئلة مقياس التصنيف',
+  text:'تُسمّى أيضًا المقياس الترتيبي. تقدّم مجموعة من الإجابات المتعددة التي يُرتَّب فيها الاختيار وفق مقياس رقمي، مثل تقييم خدمة العملاء من ١ إلى ٥، أو ذكر احتمالية التوصية بمنتج أو خدمة من ٠ إلى ١٠.',
+  key:'إجابات مرتبة على مقياس رقمي.'},
+ {id:'dich',ar:'أسئلة المقياس الثنائي',
+  text:'تُلزم المستجيبين بالاختيار بين إجابتين محتملتين فقط، مثل «نعم / لا» أو «موافق / غير موافق».',
+  key:'مناسبة للحد من الغموض الذي يصاحب الإجابات الشخصية في أسئلة مقياس التصنيف.'},
+ {id:'lik',ar:'مقياس ليكرت',en:'Likert scale',
+  text:'مقياس من ٥ أو ٧ نقاط يُستخدم لتقييم شعور العميل تجاه شيء ما. يمثّل الرقم الأدنى (١) وجهة النظر القصوى مثل «لا أوافق على الإطلاق»، ويمثّل الرقم الأعلى وجهة النظر المعاكسة مثل «أوافق بشدة»، ويشير الرقم الأوسط إلى وجهة نظر معتدلة أو محايدة.',
+  key:'الرقم الأدنى والأعلى طرفان متقابلان، والأوسط محايد.'},
+ {id:'open',ar:'الأسئلة المفتوحة',
+  text:'تمنح المشاركين حرية كتابة ما يريدون، وهي مهمة في جمع الأفكار الجديدة وتحديد القضايا والفرص التي لم نكن نعلم بها من قبل.',
+  key:'غنية بالأفكار، لكنّ معالجة بياناتها أكثر صعوبة.'}
+];
+
+var FINAL=[
+ /* الجزء الأول: اختيار من متعدد */
+ {type:'mcq',q:'أي استطلاع يعتمد على سؤال واحد يقيس احتمالية أن يوصي العميل بالمنتج أو المؤسسة؟',
+  options:['درجة رضا العملاء (CSAT)','صافي نقاط الترويج (NPS)','نقاط جهد العميل (CES)','استطلاعات النقاط المحورية'],answer:1,
+  why:'صافي نقاط الترويج (NPS) يسأل العميل سؤالًا واحدًا عن احتمالية توصيته بالمنتج أو المؤسسة لأقاربه أو أصدقائه.'},
+ {type:'mcq',q:'ماذا يقيس مقياس نقاط جهد العميل (CES)؟',
+  options:['عدد العملاء الجدد في فترة محددة','احتمالية توصية العميل بالمنتج','سهولة تجربة العميل والوقت المستغرق في استخدام المنتج أو حل مشكلة','حجم المبيعات الشهرية'],answer:2,
+  why:'يقيس CES مدى سهولة التجربة والوقت الذي يستغرقه العميل في استخدام المنتج أو إصلاح مشكلة عبر خدمة العملاء.'},
+ {type:'mcq',q:'متى تُرسَل استطلاعات النقاط المحورية؟',
+  options:['بعد كل عملية شراء دون استثناء','في مراحل مهمة من رحلة العميل، مثل بعد ٦٠ يومًا من التسجيل','عند إغلاق المؤسسة فقط','قبل أن يعرف العميل المنتج'],answer:1,
+  why:'تُوزَّع هذه الاستطلاعات في مراحل مهمة من رحلة العميل، سواء بحسب الوقت أو بحسب تجربة محددة.'},
+ {type:'mcq',q:'ما اسم المقياس المكوَّن من ٥ أو ٧ نقاط والمستخدم لتقييم شعور العميل تجاه شيء ما؟',
+  options:['الأسئلة المفتوحة','المقياس الثنائي','مقياس ليكرت','الاختيار من متعدد'],answer:2,
+  why:'مقياس ليكرت يتكوّن من ٥ أو ٧ نقاط؛ يمثّل أدناها وجهة النظر القصوى وأعلاها وجهة النظر المعاكسة.'},
+ {type:'mcq',q:'ما الخطوة الأولى عند إنشاء استبانة رضا العملاء (CSAT)؟',
+  options:['تحديد الهدف من الاستطلاع','إرسال الاستبانة إلى العملاء','كتابة الأسئلة دون تخطيط','تحليل الإجابات'],answer:0,
+  why:'نبدأ بتحديد الهدف من الاستطلاع، ثم نحدد الأسئلة التي تطلب من العملاء معلومات عن كيفية تحسين الخدمات أو المنتجات.'},
+ /* الجزء الثاني: صح أم خطأ */
+ {type:'tf',q:'كلما زاد صافي نقاط الترويج (NPS) انخفض معدل رضا العملاء.',answer:false,
+  why:'العكس صحيح: كلما زاد صافي نقاط الترويج زاد معدل رضا العملاء.'},
+ {type:'tf',q:'قد تتكوّن استطلاعات درجة رضا العملاء (CSAT) من أسئلة إجاباتها بنعم أو لا.',answer:true,
+  why:'تتكوّن هذه الاستطلاعات من أسئلة بسيطة إجاباتها بنعم أو لا، أو أسئلة يكتب فيها العميل إجابته.'},
+ {type:'tf',q:'معالجة بيانات الأسئلة المفتوحة أسهل من معالجة بيانات أسئلة الاختيار من متعدد.',answer:false,
+  why:'الأسئلة المفتوحة غنية بالأفكار، لكنّ معالجة بياناتها أكثر صعوبة. أما الاختيار من متعدد فنتائجه سهلة الجدولة.'},
+ {type:'tf',q:'في مقياس ليكرت، يمثّل الرقم الأدنى (١) وجهة النظر القصوى مثل «لا أوافق على الإطلاق».',answer:true,
+  why:'الرقم الأدنى يمثّل وجهة النظر القصوى، والأعلى يمثّل المعاكسة مثل «أوافق بشدة»، والأوسط يشير إلى وجهة نظر معتدلة أو محايدة.'},
+ {type:'tf',q:'الأسئلة الثنائية مناسبة عندما نريد الحد من الغموض الذي تسببه الإجابات الشخصية في أسئلة مقياس التصنيف.',answer:true,
+  why:'إجابتان فقط (مثل نعم / لا) تقللان الغموض الناتج عن تفاوت الإجابات الشخصية على مقياس التصنيف.'},
+ /* الجزء الثالث: اسحب وقارن */
+ {type:'drag',cap:1,ltr:true,q:'اسحب كل معنى إلى رقمه الصحيح على مقياس ليكرت.',
+  zones:[{id:'z1',t:'الرقم ١ (الأدنى)'},{id:'z3',t:'الرقم ٣ (الأوسط)'},{id:'z5',t:'الرقم ٥ (الأعلى)'}],
+  chips:[{id:'a',t:'لا أوافق على الإطلاق',zone:'z1'},{id:'b',t:'وجهة نظر معتدلة أو محايدة',zone:'z3'},{id:'c',t:'أوافق بشدة',zone:'z5'}],
+  why:'الرقم الأدنى هو وجهة النظر القصوى، والأعلى هو المعاكسة، والأوسط يشير إلى الحياد.'},
+ {type:'drag',cap:1,q:'طابِق كل نوع من أنواع الأسئلة مع وصفه.',
+  zones:[
+   {id:'z1',t:'عدد محدد من الإجابات، فتسهل جدولة النتائج'},
+   {id:'z2',t:'إجابات مرتبة وفق مقياس رقمي، مثل ١ إلى ٥ أو ٠ إلى ١٠'},
+   {id:'z3',t:'إجابتان فقط، مثل «نعم / لا» أو «موافق / غير موافق»'},
+   {id:'z4',t:'مقياس من ٥ أو ٧ نقاط بين وجهتي نظر متقابلتين'},
+   {id:'z5',t:'حرية كتابة ما يريده المشارك'}],
+  chips:[{id:'a',t:'الاختيار من متعدد',zone:'z1'},{id:'b',t:'مقياس التصنيف',zone:'z2'},{id:'c',t:'المقياس الثنائي',zone:'z3'},{id:'d',t:'مقياس ليكرت',zone:'z4'},{id:'e',t:'الأسئلة المفتوحة',zone:'z5'}],
+  why:'لكل نوع من الأسئلة استخدامه: المحدود للجدولة، والتصنيف للترتيب الرقمي، والثنائي للحد من الغموض، وليكرت لقياس الشعور، والمفتوح لجمع الأفكار.'},
+ {type:'drag',cap:99,q:'قارن بين النوعين: اسحب كل عبارة إلى الاستطلاع الذي تخصه.',
+  zones:[{id:'csat',t:'درجة رضا العملاء (CSAT)'},{id:'nps',t:'صافي نقاط الترويج (NPS)'}],
+  chips:[
+   {id:'a',t:'أسئلة بنعم أو لا',zone:'csat'},
+   {id:'b',t:'سؤال واحد عن احتمالية التوصية',zone:'nps'},
+   {id:'c',t:'مقارنة بين المنتقدين والمروّجين',zone:'nps'},
+   {id:'d',t:'يكشف الجوانب السلبية التي تحتاج إلى تحسين فوري',zone:'csat'},
+   {id:'e',t:'كلما زاد صافيه زاد رضا العملاء',zone:'nps'}],
+  why:'CSAT أسئلة بسيطة تكشف الجوانب السلبية، أما NPS فسؤال واحد عن التوصية تُقارَن فيه آراء المنتقدين والمروّجين.'},
+ {type:'drag',cap:99,q:'قارن بين النوعين: اسحب كل عبارة إلى نوع السؤال الذي تخصه.',
+  zones:[{id:'open',t:'الأسئلة المفتوحة'},{id:'dich',t:'الأسئلة الثنائية'}],
+  chips:[
+   {id:'a',t:'تمنح المشاركين حرية الكتابة',zone:'open'},
+   {id:'b',t:'إجابتان فقط: نعم أو لا',zone:'dich'},
+   {id:'c',t:'معالجة بياناتها أكثر صعوبة',zone:'open'},
+   {id:'d',t:'تحدّ من الغموض في الإجابات',zone:'dich'},
+   {id:'e',t:'تكشف قضايا وفرصًا لم نكن نعلم بها',zone:'open'}],
+  why:'المفتوحة تمنح الحرية وتجمع أفكارًا جديدة لكن تحليلها أصعب، والثنائية تحدّ من الغموض بإجابتين فقط.'},
+ {type:'drag',cap:1,q:'اسحب نوع الاستطلاع المناسب إلى كل موقف.',
+  zones:[
+   {id:'z1',t:'بعد ٦٠ يومًا من تسجيل العميل وصله استطلاع عن تجربته'},
+   {id:'z2',t:'سؤال واحد: ما احتمالية أن توصي بخدمتنا لصديقك من ٠ إلى ١٠؟'},
+   {id:'z3',t:'سؤال: ما مدى سهولة حل مشكلتك عبر خدمة العملاء؟'},
+   {id:'z4',t:'طُلب من العميل اختيار وجه مبتسم أو محايد أو حزين للتعبير عن رضاه'}],
+  chips:[{id:'a',t:'استطلاعات النقاط المحورية',zone:'z1'},{id:'b',t:'صافي نقاط الترويج (NPS)',zone:'z2'},{id:'c',t:'نقاط جهد العميل (CES)',zone:'z3'},{id:'d',t:'درجة رضا العملاء (CSAT)',zone:'z4'}],
+  why:'التوقيت بعد مدة محددة يعني استطلاعًا محوريًا، والتوصية NPS، والسهولة CES، ورضا العميل البسيط CSAT.'}
+];
+
+/* ---------- state & shell ---------- */
+var S={stage:'intro',pre:0,lesson:0,visited:{0:true},q:0,res:[]};
+function go(stage){S.stage=stage;render();top0()}
+function tracker(){
+  var idx={intro:-1,pre:0,lesson:1,quiz:2,result:2}[S.stage];
+  var names=['تمهيد','الشرح','الاختبار'];
+  $('#stages').innerHTML=names.map(function(n,k){
+    var done=k<idx||S.stage==='result';
+    var cur=k===idx&&S.stage!=='result';
+    return '<li class="'+(done?'done':cur?'cur':'')+'"'+(cur?' aria-current="step"':'')+'><b>'+(done?'✓':AR(k+1))+'</b><span>'+n+'</span></li>';
+  }).join('');
+}
+function render(){
+  tracker();
+  ({intro:vIntro,pre:vPre,lesson:vLesson,quiz:vQuiz,result:vResult})[S.stage]();
+  var f=$('.q-text');if(f)f.focus({preventScroll:true});
+}
+
+/* ---------- shared question widgets ---------- */
+function showFb(host,kind,title,body,label,next){
+  host.replaceChildren(h('<div class="fb '+kind+'" role="status"><strong>'+title+'</strong><div>'+body+'</div></div>'));
+  var b=btn(label,'primary',next);host.append(b);
+}
+function renderMCQ(host,q,cb){
+  host.className='opts';host.replaceChildren();
+  var done=false;
+  q.options.forEach(function(t,i){
+    var b=h('<button type="button" class="opt"><span class="badge">'+LET[i]+'</span><span>'+t+'</span></button>');
+    b.onclick=function(){
+      if(done)return;done=true;
+      var ok=i===q.answer;
+      b.classList.add(ok?'right':'wrong');
+      if(!ok)host.children[q.answer].classList.add('right');
+      $$('.opt',host).forEach(function(x){x.disabled=true});
+      cb(ok);
+    };
+    host.append(b);
+  });
+}
+function renderTF(host,q,cb){
+  host.className='opts two';host.replaceChildren();
+  var done=false;
+  [['صح',true],['خطأ',false]].forEach(function(p,i){
+    var b=h('<button type="button" class="opt tf">'+p[0]+'</button>');
+    b.onclick=function(){
+      if(done)return;done=true;
+      var ok=p[1]===q.answer;
+      b.classList.add(ok?'right':'wrong');
+      if(!ok)host.children[q.answer?0:1].classList.add('right');
+      $$('.opt',host).forEach(function(x){x.disabled=true});
+      cb(ok);
+    };
+    host.append(b);
+  });
+}
+
+function renderDrag(host,q,cb){
+  var cap=q.cap||1,st={},els={},sel=null,locked=false,jd=false;
+  var order=shuffle(q.chips.map(function(c){return c.id}));
+  q.chips.forEach(function(c){st[c.id]='pool'});
+  host.className='';host.replaceChildren();
+  var grid=h('<div class="dz '+(cap===1?'match':'sort')+(q.ltr?' ltr':'')+'"></div>');
+  q.zones.forEach(function(z){
+    grid.append(h('<div class="zone" data-drop="'+z.id+'"><div class="zone-t">'+z.t+'</div><div class="drop"></div></div>'));
+  });
+  var pool=h('<div class="pool" data-drop="pool"><p class="small">اسحب الإجابات إلى أماكنها، أو اضغط على الإجابة ثم اضغط على المكان المناسب.</p><div class="drop"></div></div>');
+  var act=h('<div class="actions"></div>');
+  var chk=btn('تحقق من الإجابة','primary',check);chk.disabled=true;act.append(chk);
+  host.append(grid,pool,act);
+  function zoneEl(id){return id==='pool'?pool:grid.querySelector('[data-drop="'+id+'"]')}
+  function dropOf(id){return $('.drop',zoneEl(id))}
+  function paint(){
+    q.zones.forEach(function(z){dropOf(z.id).replaceChildren()});
+    dropOf('pool').replaceChildren();
+    order.forEach(function(id){
+      dropOf(st[id]).append(els[id]);
+      els[id].classList.toggle('sel',sel===id);
+    });
+    grid.classList.toggle('armed',!!sel);
+    pool.classList.toggle('armed',!!sel);
+    chk.disabled=locked||order.some(function(id){return st[id]==='pool'});
+  }
+  function place(id,to){
+    if(locked)return;
+    if(cap===1&&to!=='pool'){order.forEach(function(k){if(k!==id&&st[k]===to)st[k]='pool'})}
+    st[id]=to;sel=null;paint();
+  }
+  function wire(e,id){
+    var sx=0,sy=0,down=false,drag=false,ghost=null;
+    function clear(){$$('.over',host).forEach(function(x){x.classList.remove('over')})}
+    function target(x,y){var t=document.elementFromPoint(x,y);var d=t&&t.closest('[data-drop]');return d&&host.contains(d)?d:null}
+    e.addEventListener('pointerdown',function(ev){
+      if(locked||(ev.pointerType==='mouse'&&ev.button!==0))return;
+      down=true;drag=false;sx=ev.clientX;sy=ev.clientY;
+      try{e.setPointerCapture(ev.pointerId)}catch(_){}
+    });
+    e.addEventListener('pointermove',function(ev){
+      if(!down)return;
+      if(!drag&&Math.hypot(ev.clientX-sx,ev.clientY-sy)>8){
+        drag=true;ghost=e.cloneNode(true);ghost.classList.add('ghost');
+        ghost.style.width=e.offsetWidth+'px';document.body.append(ghost);e.classList.add('src');
+      }
+      if(drag){
+        ghost.style.left=(ev.clientX-ghost.offsetWidth/2)+'px';
+        ghost.style.top=(ev.clientY-ghost.offsetHeight/2)+'px';
+        clear();var d=target(ev.clientX,ev.clientY);if(d)d.classList.add('over');
+      }
+    });
+    function end(ev,ok){
+      if(!down)return;down=false;
+      if(drag){
+        drag=false;var d=ok?target(ev.clientX,ev.clientY):null;
+        if(ghost){ghost.remove();ghost=null}
+        e.classList.remove('src');clear();
+        jd=true;setTimeout(function(){jd=false},80);
+        if(d)place(id,d.dataset.drop);
+      }
+    }
+    e.addEventListener('pointerup',function(ev){end(ev,true)});
+    e.addEventListener('pointercancel',function(ev){end(ev,false)});
+    e.addEventListener('click',function(){if(jd||locked)return;sel=sel===id?null:id;paint()});
+  }
+  q.chips.forEach(function(c){
+    var e=h('<button type="button" class="chip">'+c.t+'</button>');
+    els[c.id]=e;wire(e,c.id);
+  });
+  host.addEventListener('click',function(ev){
+    if(locked||!sel)return;
+    if(ev.target.closest('.chip'))return;
+    var d=ev.target.closest('[data-drop]');
+    if(d)place(sel,d.dataset.drop);
+  });
+  function check(){
+    locked=true;sel=null;var ok=0,bad=[];
+    q.chips.forEach(function(c){
+      var g=st[c.id]===c.zone;
+      els[c.id].classList.add(g?'right':'wrong');els[c.id].disabled=true;
+      if(g)ok++;else bad.push(c);
+    });
+    paint();chk.remove();
+    function zt(id){return q.zones.filter(function(z){return z.id===id})[0].t}
+    var fix=bad.length?'<ul>'+bad.map(function(c){return '<li><b>'+c.t+'</b>: مكانها الصحيح «'+zt(c.zone)+'»</li>'}).join('')+'</ul>':'';
+    cb(ok/q.chips.length,ok,q.chips.length,fix);
+  }
+  paint();
+}
+
+/* ---------- views: intro / pre ---------- */
+function vIntro(){
+  var hero=h('<section class="hero"><div class="hero-text"><p class="eyebrow">الدرس الرابع</p><h1>استطلاع رضا العملاء</h1><p class="en">Customer Satisfaction Survey</p><p class="sub">ثلاثة أسئلة سريعة تفتح الموضوع، ثم شرح تجرّب فيه كل فكرة بنفسك، ثم اختبار ختامي.</p></div></section>');
+  var go1=btn('ابدأ الدرس','gold big',function(){S.pre=0;go('pre')});
+  $('.hero-text',hero).append(go1);
+  var road=h('<ol class="road"><li><b>١. تمهيد</b><span>٣ أسئلة سريعة تختبر ما تعرفه قبل الشرح. لا تُحتسب في الدرجة.</span></li><li><b>٢. الشرح</b><span>٤ محطات تفاعلية: ما الاستطلاع، أنواعه الأربعة، أنواع أسئلته، وبناء استبانتك.</span></li><li><b>٣. الاختبار</b><span>١٥ سؤالًا: ٥ اختيار من متعدد، ٥ صح أو خطأ، ٥ اسحب وقارن.</span></li></ol>');
+  main.replaceChildren(hero,road);
+}
+function vPre(){
+  var i=S.pre,q=PRE[i];
+  var card=h('<section class="card"><div class="q-meta"><span class="pill gold">أسئلة تمهيدية</span><span class="count">سؤال '+AR(i+1)+' من '+AR(PRE.length)+'</span></div><p class="note">هذه الأسئلة للتهيئة فقط ولا تُحتسب في درجتك.</p><h2 class="q-text" tabindex="-1">'+q.q+'</h2><div id="qb"></div><div id="fb"></div></section>');
+  main.replaceChildren(card);
+  var last=i===PRE.length-1;
+  renderMCQ($('#qb'),q,function(ok){
+    showFb($('#fb'),ok?'good':'part',ok?'إجابة صحيحة':'قريبة من الفكرة، ولنتأكد معًا',q.why,last?'ابدأ الشرح':'السؤال التالي',function(){
+      if(last){S.lesson=0;S.visited={0:true};go('lesson')}else{S.pre++;render();top0()}
+    });
+  });
+}
+
+/* ---------- lesson ---------- */
+var SECS=[
+  {t:'ما هو الاستطلاع؟',build:secIntro},
+  {t:'أنواع الاستطلاعات',build:secTypes},
+  {t:'أنواع الأسئلة',build:secQtypes},
+  {t:'ابنِ استبانتك',build:secBuild}
+];
+function vLesson(){
+  var i=S.lesson;S.visited[i]=true;
+  var nav=SECS.map(function(s,k){
+    return '<button type="button" class="step'+(k===i?' on':(S.visited[k]?' seen':''))+'" data-k="'+k+'"'+(k===i?' aria-current="step"':'')+'><b>'+(S.visited[k]&&k!==i?'✓':AR(k+1))+'</b><span>'+s.t+'</span></button>';
+  }).join('');
+  var root=h('<div><nav class="steps" aria-label="محطات الشرح">'+nav+'</nav><div id="sec"></div><div class="lnav"></div></div>');
+  $$('.step',root).forEach(function(b){b.onclick=function(){S.lesson=+b.dataset.k;render();top0()}});
+  $('#sec',root).append(SECS[i].build());
+  var ln=$('.lnav',root);
+  if(i>0)ln.append(btn('السابق','ghost',function(){S.lesson=i-1;render();top0()}));else ln.append(document.createElement('span'));
+  if(i<SECS.length-1)ln.append(btn('التالي: '+SECS[i+1].t,'primary',function(){S.lesson=i+1;render();top0()}));
+  else ln.append(btn('ابدأ الاختبار الختامي','gold big',function(){S.q=0;S.res=[];go('quiz')}));
+  main.replaceChildren(root);
+}
+
+function tabs(items,build){
+  var root=h('<div><div class="seg" role="tablist"></div><div class="panel" role="tabpanel"></div></div>');
+  var seg=$('.seg',root),panel=$('.panel',root);
+  function sel(i){
+    $$('.seg-btn',seg).forEach(function(b,j){b.setAttribute('aria-selected',j===i?'true':'false')});
+    panel.replaceChildren(build(items[i],i));
+  }
+  items.forEach(function(it,i){
+    var b=h('<button type="button" class="seg-btn" role="tab" aria-selected="false">'+it.ar+'</button>');
+    b.onclick=function(){sel(i)};seg.append(b);
+  });
+  sel(0);return root;
+}
+function scale(from,to,cb){
+  var s=h('<div class="scale" role="group"></div>');
+  for(var v=from;v<=to;v++){(function(v){
+    var b=h('<button type="button" class="sc" aria-pressed="false">'+v+'</button>');
+    b.onclick=function(){$$('.sc',s).forEach(function(x){x.setAttribute('aria-pressed','false')});b.setAttribute('aria-pressed','true');cb(v)};
+    s.append(b);
+  })(v)}
+  return s;
+}
+function face(k){
+  var m={happy:'M16 36 Q28 46 40 36',neutral:'M17 38 H39',sad:'M16 42 Q28 32 40 42'}[k];
+  return '<svg class="f-'+k+'" viewBox="0 0 56 56" width="52" height="52" aria-hidden="true"><circle cx="28" cy="28" r="25" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="20" cy="22" r="2.6" fill="currentColor"/><circle cx="36" cy="22" r="2.6" fill="currentColor"/><path d="'+m+'" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg>';
+}
+function tl(steps){
+  return '<ol class="tl">'+steps.map(function(s,k){return '<li class="'+(k===steps.length-1?'last':'')+'"><i></i>'+s+'</li>'}).join('')+'</ol>';
+}
+
+function secIntro(){
+  var root=h('<article class="sec"><h2>ما هو استطلاع رضا العملاء؟</h2><p class="en">Customer Satisfaction Survey</p><p class="lead">هو نموذج لجمع البيانات يساعد الشركات والمؤسسات على فهم آراء عملائها في منتجاتها وخدماتها. هدفه تحسين المنتجات والخدمات بشكل استراتيجي بناءً على متطلبات السوق.</p><div><p class="small" style="margin-bottom:8px">اضغط على كل مرحلة لترى ما يحدث فيها:</p><div class="flow"></div></div><div class="flow-note" aria-live="polite"></div><p>توجد طرق كثيرة للحصول على معلومات عمّا يفكر فيه العملاء، ولكل منها ما يضيفه إلى فهمنا لتجربة العميل. في المحطة التالية ستتعرف إلى أربعة أنواع فعّالة من هذه الاستطلاعات.</p></article>');
+  var steps=[
+    ['نسأل العميل','نصمّم أسئلة تجمع آراء العملاء في منتجاتنا وخدماتنا.'],
+    ['نفهم السوق','نقرأ الإجابات لنعرف ما يفكر فيه العميل وما تتطلبه السوق.'],
+    ['نحسّن','نبني قرارات تطوير المنتجات والخدمات على ما عرفناه، بشكل استراتيجي.']
+  ];
+  var fl=$('.flow',root),note=$('.flow-note',root);
+  steps.forEach(function(s,i){
+    var b=h('<button type="button" class="node" aria-pressed="false"><small>المرحلة '+AR(i+1)+'</small>'+s[0]+'</button>');
+    b.onclick=function(){$$('.node',fl).forEach(function(x){x.setAttribute('aria-pressed','false')});b.setAttribute('aria-pressed','true');note.textContent=s[1]};
+    fl.append(b);
+  });
+  fl.children[0].click();
+  return root;
+}
+
+var DEMOS={
+  csat:function(){
+    var r=h('<div><p class="dq">هل أنت راضٍ عن الخدمة التي حصلت عليها؟</p><div class="faces"></div><p class="out">اختر وجهًا ليظهر معنى إجابتك.</p></div>');
+    var out=$('.out',r),box=$('.faces',r);
+    [['happy','راضٍ','إجابة إيجابية: العميل راضٍ عن تجربته.','good'],['neutral','محايد','إجابة محايدة: اسأله عمّا ينقصه ليصبح راضيًا.','mid'],['sad','غير راضٍ','إجابة سلبية: كشفت جانبًا يحتاج إلى تحسين فوري.','bad']].forEach(function(f){
+      var b=h('<button type="button" class="face" aria-pressed="false">'+face(f[0])+'<span>'+f[1]+'</span></button>');
+      b.onclick=function(){$$('.face',box).forEach(function(x){x.setAttribute('aria-pressed','false')});b.setAttribute('aria-pressed','true');setOut(out,f[2],f[3])};
+      box.append(b);
+    });
+    return r;
+  },
+  nps:function(){
+    var r=h('<div><p class="dq">ما احتمالية أن توصي بخدمتنا لأحد أصدقائك؟</p><div class="sc-host"></div><div class="anch"><span>غير محتمل إطلاقًا</span><span></span><span>محتمل جدًا</span></div><p class="out">اختر رقمًا من ٠ إلى ١٠.</p><div class="formula"><span class="tag">معلومة إضافية</span><span>صافي نقاط الترويج = نسبة المروّجين − نسبة المنتقدين</span><span class="small">مثال: ٦٠٪ مروّجون − ٢٠٪ منتقدون = ٤٠ نقطة</span></div></div>');
+    var out=$('.out',r);
+    $('.sc-host',r).append(scale(0,10,function(v){
+      if(v>=9)setOut(out,'أنت <b>مروّج</b>: ستوصي بالخدمة بحماس.','good');
+      else if(v>=7)setOut(out,'أنت <b>محايد</b>: راضٍ، لكنك لن تروّج للخدمة.','mid');
+      else setOut(out,'أنت <b>منتقد</b>: لديك ملاحظات تستحق أن نسمعها.','bad');
+    }));
+    return r;
+  },
+  ces:function(){
+    var r=h('<div><p class="dq">«كان من السهل حل مشكلتي عبر خدمة العملاء.»</p><div class="sc-host"></div><div class="anch"><span>لا أوافق على الإطلاق</span><span></span><span>أوافق بشدة</span></div><p class="out">اختر رقمًا من ١ إلى ٥.</p></div>');
+    var out=$('.out',r);
+    $('.sc-host',r).append(scale(1,5,function(v){
+      if(v>=4)setOut(out,'جهد قليل: التجربة سهلة وسريعة.','good');
+      else if(v===3)setOut(out,'جهد متوسط: هناك ما يمكن تبسيطه.','mid');
+      else setOut(out,'جهد كبير: واجه العميل صعوبة، فتحتاج الخطوات إلى إصلاح.','bad');
+    }));
+    return r;
+  },
+  ms:function(){
+    var r=h('<div><div class="mini-seg" role="group" aria-label="طريقة تحديد النقطة"></div><div class="tlh"></div><p class="out"></p></div>');
+    var seg=$('.mini-seg',r),tlh=$('.tlh',r),out=$('.out',r);
+    var modes=[
+      ['حسب الوقت',['العميل يسجّل','تمرّ ٦٠ يومًا','يصله الاستطلاع'],'نقطة محورية زمنية: استطلاع بعد ٦٠ يومًا من التسجيل.'],
+      ['حسب تجربة محددة',['ينضم عملاء جدد','يكتمل العدد المحدد','يُرسَل الاستطلاع'],'نقطة محورية مرتبطة بتجربة: استطلاع بعد اكتمال عدد من العملاء الجدد.']
+    ];
+    modes.forEach(function(m,i){
+      var b=h('<button type="button" aria-pressed="false">'+m[0]+'</button>');
+      b.onclick=function(){$$('button',seg).forEach(function(x){x.setAttribute('aria-pressed','false')});b.setAttribute('aria-pressed','true');tlh.innerHTML=tl(m[1]);setOut(out,m[2],'')};
+      seg.append(b);
+    });
+    seg.children[0].click();
+    return r;
+  }
+};
+
+function secTypes(){
+  var root=h('<article class="sec"><h2>أنواع الاستطلاعات الأربعة</h2><p class="lead">هناك أربعة أنواع من استطلاعات رضا العملاء الفعّالة. اختر نوعًا واقرأ عنه، ثم جرّبه في المربع المجاور.</p></article>');
+  root.append(tabs(TYPES,function(t){
+    var p=h('<div class="two"><div class="exp"><h3>'+t.ar+'</h3><p class="en">'+t.en+'</p><p>'+t.text+'</p><p class="key"><span>الفكرة باختصار</span>'+t.key+'</p></div><div class="demo"><p class="demo-h">جرّب بنفسك</p><div class="demo-body"></div></div></div>');
+    $('.demo-body',p).append(DEMOS[t.id]());
+    return p;
+  }));
+  return root;
+}
+
+var QDEMOS={
+  mcq:function(){
+    var r=h('<div><p class="dq">ما أكثر ما أعجبك في خدمتنا؟</p><div class="opts"></div><p class="out">عدد الإجابات محدود، فيسهل جمع النتائج وجدولتها.</p></div>');
+    var box=$('.opts',r);
+    ['سرعة الاستجابة','جودة المنتج','السعر المناسب'].forEach(function(t){
+      var b=h('<button type="button" class="opt" aria-pressed="false"><span>'+t+'</span></button>');
+      b.onclick=function(){$$('.opt',box).forEach(function(x){x.classList.remove('sel');x.setAttribute('aria-pressed','false')});b.classList.add('sel');b.setAttribute('aria-pressed','true')};
+      box.append(b);
+    });
+    return r;
+  },
+  rate:function(){
+    var r=h('<div><p class="dq">كيف تقيّم خدمة العملاء لدينا؟</p><div class="stars" role="group" aria-label="التقييم"></div><p class="out">اضغط على نجمة لتحديد تقييمك.</p><p class="small">يمكن أيضًا استخدام مقياس من ٠ إلى ١٠، مثل سؤال احتمالية التوصية.</p></div>');
+    var box=$('.stars',r),out=$('.out',r),btns=[];
+    var STAR='<svg viewBox="0 0 24 24" width="38" height="38" aria-hidden="true"><path d="M12 2.5l2.9 6.2 6.8.8-5 4.7 1.3 6.7L12 17.5 6 20.9l1.3-6.7-5-4.7 6.8-.8z"/></svg>';
+    for(var v=1;v<=5;v++){(function(v){
+      var b=h('<button type="button" class="star" aria-label="'+AR(v)+' من ٥">'+STAR+'</button>');
+      b.onclick=function(){btns.forEach(function(x,k){x.classList.toggle('on',k<v)});setOut(out,'تقييمك: '+AR(v)+' من ٥ نجوم.','')};
+      btns.push(b);box.append(b);
+    })(v)}
+    return r;
+  },
+  dich:function(){
+    var r=h('<div><p class="dq">هل استخدمت خدمتنا من قبل؟</p><div class="opts two a"></div><p class="dq">الخدمة سريعة.</p><div class="opts two b"></div><p class="out">إجابتان فقط: لا توجد منطقة رمادية، فيقلّ الغموض.</p></div>');
+    [['.a',['نعم','لا']],['.b',['موافق','غير موافق']]].forEach(function(g){
+      var box=$(g[0],r);
+      g[1].forEach(function(t){
+        var b=h('<button type="button" class="opt" aria-pressed="false" style="justify-content:center"><span>'+t+'</span></button>');
+        b.onclick=function(){$$('.opt',box).forEach(function(x){x.classList.remove('sel');x.setAttribute('aria-pressed','false')});b.classList.add('sel');b.setAttribute('aria-pressed','true')};
+        box.append(b);
+      });
+    });
+    return r;
+  },
+  lik:function(){
+    var n=5;
+    var r=h('<div><p class="dq">«أجد أن خدمة العملاء سريعة.»</p><div class="mini-seg" role="group" aria-label="عدد النقاط"></div><div class="lk"></div><div class="anch"><span>لا أوافق على الإطلاق</span><span>محايد</span><span>أوافق بشدة</span></div><p class="out"></p></div>');
+    var lk=$('.lk',r),out=$('.out',r),seg=$('.mini-seg',r);
+    function draw(){
+      lk.replaceChildren(scale(1,n,function(v){
+        var mid=Math.ceil(n/2);
+        if(v===1)setOut(out,'الرقم ١ (الأدنى): وجهة النظر القصوى، «لا أوافق على الإطلاق».','bad');
+        else if(v===n)setOut(out,'الرقم '+AR(n)+' (الأعلى): وجهة النظر المعاكسة، «أوافق بشدة».','good');
+        else if(v===mid)setOut(out,'الرقم '+AR(v)+' (الأوسط): وجهة نظر معتدلة أو محايدة.','mid');
+        else setOut(out,v<mid?'ميل إلى عدم الموافقة.':'ميل إلى الموافقة.','');
+      }));
+      setOut(out,'اختر رقمًا لترى معناه.','');
+    }
+    [5,7].forEach(function(k){
+      var b=h('<button type="button" aria-pressed="false">'+AR(k)+' نقاط</button>');
+      b.onclick=function(){n=k;$$('button',seg).forEach(function(x){x.setAttribute('aria-pressed','false')});b.setAttribute('aria-pressed','true');draw()};
+      seg.append(b);
+    });
+    seg.children[0].click();
+    return r;
+  },
+  open:function(){
+    var r=h('<div><label class="dq" for="open-t">ما الذي يمكننا تحسينه في خدمتنا؟</label><textarea id="open-t" placeholder="اكتب بحرية ما تريد..."></textarea><div class="pc"><p><b>ميزة</b>تكشف قضايا وفرصًا لم نكن نعلم بها، وتجمع أفكارًا جديدة.</p><p><b>تحدٍّ</b>معالجة بياناتها أكثر صعوبة.</p></div></div>');
+    return r;
+  }
+};
+
+function secQtypes(){
+  var root=h('<article class="sec"><h2>أنواع الأسئلة</h2><p class="lead">إلى جانب أنواع الاستطلاعات الأربعة، توجد أنواع مختلفة من الأسئلة. اختر نوعًا ثم جرّبه.</p></article>');
+  root.append(tabs(QTYPES,function(t){
+    var p=h('<div class="two"><div class="exp"><h3>'+t.ar+'</h3>'+(t.en?'<p class="en">'+t.en+'</p>':'')+'<p>'+t.text+'</p><p class="key"><span>الفكرة باختصار</span>'+t.key+'</p></div><div class="demo"><p class="demo-h">جرّب بنفسك</p><div class="demo-body"></div></div></div>');
+    $('.demo-body',p).append(QDEMOS[t.id]());
+    return p;
+  }));
+  return root;
+}
+
+function secBuild(){
+  var GOALS=['قياس رضا العملاء عن سرعة التوصيل','معرفة رأي العملاء في جودة المنتج','تقييم تجربة التعامل مع خدمة العملاء'];
+  var BANK=[
+    {id:1,t:'هل كنت راضيًا عن تجربتك اليوم؟',k:'ثنائي (نعم / لا)',ok:true},
+    {id:2,t:'كيف تقيّم خدمتنا من ١ إلى ٥؟',k:'مقياس التصنيف',ok:true},
+    {id:3,t:'ما الذي يمكننا تحسينه برأيك؟',k:'سؤال مفتوح',ok:true},
+    {id:4,t:'أي جانب أعجبك أكثر في خدمتنا؟',k:'اختيار من متعدد',ok:true},
+    {id:5,t:'أوافق على أن الخدمة كانت سريعة.',k:'مقياس ليكرت',ok:true},
+    {id:6,t:'في أي مدينة وُلد مدير الشركة؟',k:'سؤال مفتوح',ok:false}
+  ];
+  var goal=-1,picked={};
+  var root=h('<article class="sec"><h2>أنشئ استبانة رضا العملاء</h2><p class="en">Create a Customer Satisfaction Questionnaire</p><p class="lead">ستنشئ استبانة من نوع درجة رضا العملاء (CSAT). ابدأ بتحديد الهدف من الاستطلاع، ثم اختر الأسئلة التي تطلب من عملائك معلومات تفيدك في تحسين خدماتك أو منتجاتك.</p><div class="build"><div class="bcol"><h3>١. حدّد الهدف</h3><div class="goals"></div><h3>٢. اختر الأسئلة</h3><div class="bank"></div></div><div class="bcol"><h3>٣. معاينة استبانتك</h3><div class="paper" aria-live="polite"></div></div></div></article>');
+  var gbox=$('.goals',root),bbox=$('.bank',root),paper=$('.paper',root);
+  function upd(){
+    var items=BANK.filter(function(q){return picked[q.id]});
+    var bad=items.filter(function(q){return !q.ok});
+    var msg,kind='';
+    if(goal<0)msg='اختر الهدف من الاستطلاع أولًا.';
+    else if(bad.length){msg='السؤال «'+bad[0].t+'» لا يخدم هدف الاستطلاع. استبدله بسؤال يكشف رأي العميل في خدماتك.';kind='bad'}
+    else if(items.length<3)msg='اختر ٣ أسئلة على الأقل (اخترت '+AR(items.length)+').';
+    else{msg='استبانة جاهزة: هدفها واضح وكل أسئلتها تخدمه.';kind='good'}
+    paper.innerHTML='<h4>'+(goal<0?'لم يُحدَّد الهدف بعد':'الهدف: '+GOALS[goal])+'</h4>'+
+      (items.length?'<ol>'+items.map(function(q){return '<li>'+q.t+'<span class="kind">'+q.k+'</span></li>'}).join('')+'</ol>':'<p class="small">ستظهر الأسئلة التي تختارها هنا.</p>')+
+      '<p class="msg '+kind+'">'+msg+'</p>';
+  }
+  GOALS.forEach(function(g,i){
+    var b=h('<button type="button" class="opt" aria-pressed="false"><span>'+g+'</span></button>');
+    b.onclick=function(){goal=i;$$('.opt',gbox).forEach(function(x){x.classList.remove('sel');x.setAttribute('aria-pressed','false')});b.classList.add('sel');b.setAttribute('aria-pressed','true');upd()};
+    gbox.append(b);
+  });
+  BANK.forEach(function(q){
+    var b=h('<button type="button" class="opt" aria-pressed="false"><span>'+q.t+'</span><span class="kind">'+q.k+'</span></button>');
+    b.onclick=function(){picked[q.id]=!picked[q.id];b.classList.toggle('sel',!!picked[q.id]);b.setAttribute('aria-pressed',picked[q.id]?'true':'false');upd()};
+    bbox.append(b);
+  });
+  upd();
+  return root;
+}
+
+/* ---------- final quiz ---------- */
+var PARTS=['الجزء الأول · اختيار من متعدد','الجزء الثاني · صح أم خطأ','الجزء الثالث · اسحب وقارن'];
+function vQuiz(){
+  var i=S.q,q=FINAL[i];
+  var segs=FINAL.map(function(_,k){
+    var c=k<i?(S.res[k]>=1?'ok':S.res[k]>0?'half':'no'):(k===i?'cur':'');
+    return '<i class="'+c+'"></i>';
+  }).join('');
+  var card=h('<section class="card"><div class="q-meta"><span class="pill">'+PARTS[Math.floor(i/5)]+'</span><span class="count">'+AR(i+1)+' / '+AR(FINAL.length)+'</span></div><div class="segs" aria-hidden="true">'+segs+'</div><h2 class="q-text" tabindex="-1">'+q.q+'</h2><div id="qb"></div><div id="fb"></div></section>');
+  main.replaceChildren(card);
+  var last=i===FINAL.length-1;
+  function next(){if(last)go('result');else{S.q++;render();top0()}}
+  function fin(score,title,kind,body){S.res[i]=score;showFb($('#fb'),kind,title,body,last?'عرض النتيجة':'السؤال التالي',next)}
+  if(q.type==='mcq')renderMCQ($('#qb'),q,function(ok){fin(ok?1:0,ok?'إجابة صحيحة':'إجابة خاطئة',ok?'good':'bad',q.why)});
+  else if(q.type==='tf')renderTF($('#qb'),q,function(ok){fin(ok?1:0,ok?'إجابة صحيحة':'إجابة خاطئة',ok?'good':'bad',q.why)});
+  else renderDrag($('#qb'),q,function(score,ok,total,fix){
+    var kind=score===1?'good':score>0?'part':'bad';
+    var title=score===1?'أحسنت! كل الإجابات في مكانها الصحيح':AR(ok)+' من '+AR(total)+' في مكانها الصحيح';
+    fin(score,title,kind,'<p>'+q.why+'</p>'+fix);
+  });
+}
+
+function vResult(){
+  var sum=function(a){return a.reduce(function(x,y){return x+(y||0)},0)};
+  var total=sum(S.res),r=Math.round(total*10)/10,pct=total/FINAL.length,C=2*Math.PI*52;
+  var tier=r>=13?['ممتاز','أتقنت أنواع الاستطلاعات وأنواع الأسئلة وخطوات إنشاء الاستبانة.']:
+           r>=10?['جيد جدًا','فهمك قوي. راجع النقاط التي أخطأت فيها لتثبّتها.']:
+           r>=7.5?['جيد','أنت على الطريق. راجع الشرح ثم أعد المحاولة.']:
+           ['تحتاج إلى مراجعة','ارجع إلى الشرح التفاعلي ثم جرّب الاختبار مرة أخرى.'];
+  var names=['اختيار من متعدد','صح أم خطأ','اسحب وقارن'];
+  var bars=names.map(function(n,p){
+    var v=sum(S.res.slice(p*5,p*5+5)),vr=Math.round(v*10)/10;
+    return '<div class="bar"><span>'+n+'</span><div><i style="width:'+(v/5*100)+'%"></i></div><span>'+AR(vr)+' / ٥</span></div>';
+  }).join('');
+  var missed=FINAL.map(function(q,k){return [q,S.res[k]]}).filter(function(p){return p[1]<1});
+  var card=h('<section class="card"><h2 class="q-text" tabindex="-1">نتيجتك: '+tier[0]+'</h2><div class="res"><svg class="ring" viewBox="0 0 120 120" role="img" aria-label="الدرجة '+AR(r)+' من ١٥"><circle class="ring-bg" cx="60" cy="60" r="52" fill="none" stroke-width="10"/><circle class="ring-fg" cx="60" cy="60" r="52" fill="none" stroke-width="10" stroke-dasharray="'+C+'" stroke-dashoffset="'+C+'" transform="rotate(-90 60 60)"/><text class="ring-n" x="60" y="62" text-anchor="middle" fill="currentColor">'+AR(r)+'</text><text class="ring-s" x="60" y="82" text-anchor="middle" fill="currentColor">من ١٥</text></svg><div class="bars"><p>'+tier[1]+'</p>'+bars+'</div></div>'+
+    (missed.length?'<h3>راجع ما فاتك</h3><div class="miss">'+missed.map(function(p){return '<article><p>'+p[0].q+'</p><p class="small">'+p[0].why+'</p></article>'}).join('')+'</div>':'<p class="fb good">لم تُخطئ في أي سؤال. أحسنت!</p>')+
+    '<div class="actions" id="ra"></div></section>');
+  main.replaceChildren(card);
+  var ra=$('#ra',card);
+  ra.append(btn('أعد الاختبار','gold',function(){S.q=0;S.res=[];go('quiz')}));
+  ra.append(btn('راجع الشرح','ghost',function(){S.lesson=0;go('lesson')}));
+  var fg=$('.ring-fg',card);
+  requestAnimationFrame(function(){requestAnimationFrame(function(){fg.setAttribute('stroke-dashoffset',String(C*(1-pct)))})});
+}
+
+render();
+})();
+</script>
+
+</body></html>
