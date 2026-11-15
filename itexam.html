@@ -1,0 +1,41 @@
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>تنزيل ملفات الاختبار العملي </title>
+</head>
+<body>
+
+    <h2>تنزيل ملفات الاختبار العملي</h2>
+    <p>الصف الحادي عشر – تقنية المعلومات</p>
+
+    <hr>
+
+    <h3> تنزيل ورقة الاجابة</h3>
+    <button onclick="downloadFile(1)">اضغط هنا للتنزيل  </button>
+
+
+    <script>
+        const files = {
+            1: "https://docs.google.com/document/d/17Dm2bn9W0I6QrhE7L6MskG6wzFJjiw70/export?format=docx",
+
+            2: "ضع_رابط_الملف_الثاني_هنا"
+        };
+
+        function downloadFile(number) {
+            const url = files[number];
+
+            if (!url || url.includes("ضع_رابط")) {
+                alert("رابط الملف غير متوفر");
+                return;
+            }
+
+            const link = document.createElement("a");
+            link.href = url;
+            link.click();
+        }
+    </script>
+
+</body>
+</html>
