@@ -1,0 +1,582 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>دليل المشاريع الأربعة</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@400;500;600&family=Readex+Pro:wght@500;600;700&display=swap">
+<style>
+/* Layout: hero in deep blue with a green angled shape, group tabs, then one project panel with an expandable step timeline.
+   Palette comes from the textbook: deep blue, leaf green, sky blue. Type: Readex Pro for titles, IBM Plex Sans Arabic for text. */
+:root{
+  --bg:#f3f7f6; --surface:#ffffff; --surface-2:#eaf1f0; --fg:#13303f; --muted:#52707e; --line:#d3e0e2;
+  --h:#0b4f7c; --accent:#0a7fb8; --accent-soft:#dcedf7; --green:#a7c463; --green-soft:#e8f0d2;
+  --num-bg:#0b4f7c; --num-fg:#ffffff; --ok:#2e7d4f; --ok-soft:#dff0e5; --warn:#9a5700; --bad:#b3372f; --bad-soft:#f8e3e1;
+  --hero-1:#0b4f7c; --hero-2:#073a5c; --on-hero:#ffffff; --shadow:0 1px 2px rgba(11,79,124,.08),0 6px 20px rgba(11,79,124,.06);
+  --font-display:"Readex Pro","IBM Plex Sans Arabic","Segoe UI",Tahoma,sans-serif;
+  --font-body:"IBM Plex Sans Arabic","Segoe UI",Tahoma,sans-serif;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0c1a22; --surface:#122530; --surface-2:#173040; --fg:#e4edf1; --muted:#97b0bc; --line:#244050;
+    --h:#8ccdf2; --accent:#55b8ee; --accent-soft:#12394d; --green:#8fae4a; --green-soft:#26361b;
+    --num-bg:#1d7fb5; --num-fg:#ffffff; --ok:#6fcf97; --ok-soft:#173a29; --warn:#f0a54a; --bad:#f08a82; --bad-soft:#3d1f1d;
+    --hero-1:#0a3a58; --hero-2:#06283f; --shadow:0 1px 2px rgba(0,0,0,.4),0 6px 20px rgba(0,0,0,.25);
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0c1a22; --surface:#122530; --surface-2:#173040; --fg:#e4edf1; --muted:#97b0bc; --line:#244050;
+  --h:#8ccdf2; --accent:#55b8ee; --accent-soft:#12394d; --green:#8fae4a; --green-soft:#26361b;
+  --num-bg:#1d7fb5; --num-fg:#ffffff; --ok:#6fcf97; --ok-soft:#173a29; --warn:#f0a54a; --bad:#f08a82; --bad-soft:#3d1f1d;
+  --hero-1:#0a3a58; --hero-2:#06283f; --shadow:0 1px 2px rgba(0,0,0,.4),0 6px 20px rgba(0,0,0,.25);
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--font-body);font-size:16px;line-height:1.75;margin:0}
+h1,h2,h3,p,ul,ol{margin:0}
+ul,ol{padding:0;list-style:none}
+button{font:inherit;color:inherit}
+a{color:var(--accent)}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:6px}
+.lat{font-family:"Segoe UI",system-ui,sans-serif;font-size:.94em;unicode-bidi:isolate}
+.wrap{max-width:960px;margin-inline:auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+
+/* hero */
+.hero{position:relative;overflow:hidden;color:var(--on-hero);margin-top:calc(-1*env(safe-area-inset-top,0px));
+  background:
+    linear-gradient(rgba(255,255,255,.045) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.045) 1px,transparent 1px),
+    linear-gradient(160deg,var(--hero-1),var(--hero-2));
+  background-size:30px 30px,30px 30px,auto}
+.hero::before{content:"";position:absolute;inset-block:0;inset-inline-end:0;width:min(44%,380px);background:var(--green);opacity:.28;clip-path:polygon(0 0,100% 0,100% 100%,35% 100%)}
+.hero .wrap{position:relative;padding-block:calc(env(safe-area-inset-top,0px) + 2.25rem) 2rem}
+.eyebrow{font-size:.85rem;letter-spacing:.04em;opacity:.85;margin-bottom:.35rem}
+.hero h1{font-family:var(--font-display);font-weight:700;font-size:clamp(1.9rem,6vw,3rem);line-height:1.25;text-wrap:balance}
+.hero .lead{max-width:46ch;margin-top:.7rem;opacity:.92}
+.overall{margin-top:1.4rem;max-width:380px}
+.overall .row{display:flex;justify-content:space-between;gap:1rem;font-size:.9rem;margin-bottom:.35rem}
+.meter{height:8px;border-radius:99px;background:rgba(255,255,255,.22);overflow:hidden}
+.meter i{display:block;height:100%;width:0;background:var(--green);border-radius:99px;transition:width .35s ease}
+
+/* tabs */
+.tabs{display:grid;grid-template-columns:1fr 1fr;gap:1rem;padding-block:1.5rem 0.5rem}
+.tgroup{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:.9rem;box-shadow:var(--shadow);min-width:0}
+.tgroup h2{font-family:var(--font-display);font-size:.95rem;font-weight:600;color:var(--h)}
+.tgroup .sub{font-size:.85rem;color:var(--muted);margin-bottom:.7rem}
+.tgrid{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+.tab{display:flex;flex-direction:column;gap:.2rem;text-decoration:none;color:var(--fg);background:var(--surface-2);border:2px solid transparent;border-radius:10px;padding:.6rem .7rem;min-width:0}
+.tab:hover{border-color:var(--line)}
+.tab[aria-current="page"]{background:var(--green-soft);border-color:var(--green)}
+.tab .tn{font-family:var(--font-display);font-weight:600;font-size:.8rem;color:var(--h)}
+.tab .tt{font-size:.88rem;line-height:1.45;font-weight:500}
+.tab .tp{font-size:.78rem;color:var(--muted);font-variant-numeric:tabular-nums}
+
+/* project panel */
+.band{background:var(--green-soft);border-radius:14px;padding:1.3rem 1.4rem;margin-top:1.25rem;position:relative;overflow:hidden}
+.band::after{content:"";position:absolute;inset-block:0;inset-inline-end:0;width:90px;background:var(--green);opacity:.35;clip-path:polygon(0 0,100% 0,100% 100%,40% 100%)}
+.band small{display:block;font-family:var(--font-display);font-weight:500;color:var(--h);font-size:1rem}
+.band h2{font-family:var(--font-display);font-weight:700;color:var(--h);font-size:clamp(1.5rem,5vw,2.3rem);line-height:1.35;text-wrap:balance;position:relative}
+.prog{display:flex;align-items:center;gap:.8rem;margin-top:.9rem;position:relative;flex-wrap:wrap}
+.prog .meter{flex:1 1 160px;background:rgba(11,79,124,.15);max-width:340px}
+.prog .meter i{background:var(--num-bg)}
+.prog-text{font-size:.9rem;color:var(--h);font-variant-numeric:tabular-nums}
+.sec{margin-top:2rem}
+.sec>h3{font-family:var(--font-display);font-weight:600;font-size:1.3rem;color:var(--accent);margin-bottom:.7rem}
+.sec p+p{margin-top:.7rem}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem;margin-top:.9rem}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:1rem 1.1rem;min-width:0}
+.card h4{font-family:var(--font-display);font-weight:600;font-size:1.02rem;color:var(--h);margin:0 0 .3rem}
+.card p{font-size:.95rem}
+.note{display:flex;gap:.7rem;align-items:flex-start;background:var(--accent-soft);border-radius:10px;padding:.7rem .9rem;margin-top:.9rem;font-size:.93rem}
+.note b{flex:none;width:1.4rem;height:1.4rem;border-radius:50%;background:var(--num-bg);color:var(--num-fg);display:grid;place-items:center;font-size:.8rem;line-height:1;margin-top:.2rem}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+.tool{padding:.5rem 0;border-bottom:1px solid var(--line)}
+.tool:last-child{border-bottom:0}
+.tool .cat{font-weight:600;font-size:.93rem}
+.chips{display:flex;flex-wrap:wrap;gap:.4rem;margin-top:.3rem}
+.chip{background:var(--accent-soft);color:var(--h);border-radius:99px;padding:.1rem .75rem;font-size:.88rem}
+.skill{padding:.5rem 0;border-bottom:1px solid var(--line)}
+.skill:last-child{border-bottom:0}
+.skill b{color:var(--h)}
+
+/* steps */
+.steps{display:flex;flex-direction:column;gap:.7rem}
+.step{background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.step-h{display:flex;align-items:center;gap:.8rem;width:100%;background:none;border:0;padding:.8rem 1rem;cursor:pointer;text-align:start}
+.step-h:hover{background:var(--surface-2)}
+.sn{flex:none;width:2rem;height:2rem;border-radius:6px;background:var(--num-bg);color:var(--num-fg);display:grid;place-items:center;font-family:var(--font-display);font-weight:600}
+.step.done .sn{background:var(--ok);color:#fff}
+.st{flex:1;font-family:var(--font-display);font-weight:600;font-size:1.03rem;line-height:1.5;min-width:0}
+.sc{font-size:.82rem;color:var(--muted);font-variant-numeric:tabular-nums;white-space:nowrap}
+.chev{flex:none;width:.6rem;height:.6rem;border-inline-end:2px solid var(--muted);border-bottom:2px solid var(--muted);transform:rotate(45deg);transition:transform .2s}
+.step.open .chev{transform:rotate(-135deg)}
+.step-b{padding:.2rem 1.1rem 1.1rem;margin-inline-start:1rem;border-inline-start:2px solid var(--accent);margin-inline-end:1rem;margin-bottom:.4rem}
+.step:not(.open) .step-b{display:none}
+.step-b>p{margin:.4rem 0 .6rem}
+.lbl{font-weight:600;font-size:.9rem;color:var(--h);margin:.7rem 0 .3rem}
+.pts{background:var(--surface-2);border-radius:10px;padding:.6rem .9rem}
+.pts li{position:relative;padding-inline-start:1rem;font-size:.95rem}
+.pts li::before{content:"";position:absolute;inset-inline-start:0;top:.8em;width:.4rem;height:.4rem;border-radius:50%;background:var(--accent)}
+.qchips{display:flex;flex-direction:column;gap:.4rem;margin:.3rem 0 .6rem}
+.qchips span{background:var(--accent-soft);border-radius:10px;padding:.4rem .8rem;font-size:.95rem}
+.check{display:flex;gap:.7rem;align-items:flex-start;padding:.45rem .2rem;cursor:pointer;border-radius:8px}
+.check:hover{background:var(--surface-2)}
+.check input{position:absolute;opacity:0;width:1px;height:1px}
+.box{flex:none;width:1.35rem;height:1.35rem;margin-top:.22rem;border:2px solid var(--muted);border-radius:6px;display:grid;place-items:center;background:var(--surface)}
+.check input:checked+.box{background:var(--ok);border-color:var(--ok)}
+.check input:checked+.box::after{content:"";width:.35rem;height:.7rem;border-inline-end:2.5px solid #fff;border-bottom:2.5px solid #fff;transform:rotate(45deg) translate(-1px,-1px)}
+.check input:focus-visible+.box{outline:3px solid var(--accent);outline-offset:2px}
+.check input:checked~.tx{color:var(--muted)}
+.tip{margin-top:.7rem;background:var(--green-soft);border-radius:10px;padding:.6rem .9rem;font-size:.93rem}
+
+/* widgets */
+.widget{margin-top:1rem;border:1px dashed var(--accent);border-radius:12px;padding:.9rem 1rem;background:var(--surface)}
+.wg-head{display:flex;justify-content:space-between;align-items:center;gap:.6rem;flex-wrap:wrap;margin-bottom:.6rem}
+.wg-head strong{font-family:var(--font-display);color:var(--h)}
+.tag{font-size:.76rem;background:var(--accent-soft);color:var(--h);padding:.05rem .6rem;border-radius:99px}
+.seg{display:inline-flex;background:var(--surface-2);border-radius:99px;padding:3px;gap:2px;margin-bottom:.7rem;flex-wrap:wrap}
+.seg button{border:0;background:none;padding:.2rem .9rem;border-radius:99px;cursor:pointer;font-size:.9rem}
+.seg button[aria-pressed="true"]{background:var(--num-bg);color:var(--num-fg)}
+.ds-row{display:grid;grid-template-columns:minmax(120px,1.2fr) 2fr auto;gap:.3rem .8rem;align-items:center;padding:.45rem 0;border-top:1px solid var(--line)}
+.ds-row .nm{font-size:.93rem;min-width:0}
+.bar{height:10px;border-radius:99px;background:var(--surface-2);overflow:hidden}
+.bar i{display:block;height:100%;background:var(--warn);border-radius:99px;transition:width .25s}
+.bar.full i{background:var(--ok)}
+.cnt{display:flex;align-items:center;gap:.4rem;font-variant-numeric:tabular-nums}
+.cnt b{min-width:2ch;text-align:center}
+.cnt button,.lg-btns button{border:1px solid var(--line);background:var(--surface-2);border-radius:8px;min-width:2rem;height:2rem;cursor:pointer}
+.cnt button:hover{border-color:var(--accent)}
+.ds-st{grid-column:1/-1;font-size:.82rem;color:var(--warn)}
+.ds-st.ok{color:var(--ok)}
+.wg-sum{margin-top:.5rem;font-size:.92rem;font-weight:600;color:var(--h)}
+.lg-btns{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:.7rem}
+.lg-btns button{padding:.15rem .9rem;height:auto;min-height:2rem}
+.lg-btns button[aria-pressed="true"]{background:var(--num-bg);color:var(--num-fg);border-color:var(--num-bg)}
+.rule{border-radius:10px;border:1px solid var(--line);padding:.5rem .8rem;margin-top:.45rem;font-size:.93rem;background:var(--surface-2)}
+.rule.on{border-color:var(--ok);background:var(--ok-soft)}
+.rule small{display:block;color:var(--muted)}
+.rule.on small{color:var(--fg)}
+.tree{font-size:.95rem}
+.tree .root{font-weight:600;color:var(--h)}
+.tree ul{margin-inline-start:.7rem;border-inline-start:2px solid var(--line);padding-inline-start:1rem}
+.tree li{position:relative;padding:.2rem 0}
+.tree li::before{content:"";position:absolute;inset-inline-start:-1rem;top:1.05em;width:.8rem;border-top:2px solid var(--line)}
+.tree em{font-style:normal;color:var(--muted);font-size:.85rem}
+
+/* quiz */
+.q{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:1rem 1.1rem;margin-top:.8rem}
+.q-t{font-weight:600}
+.opts{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:.6rem}
+.opt{border:1.5px solid var(--line);background:var(--surface-2);border-radius:10px;padding:.35rem .9rem;cursor:pointer}
+.opt:hover:not(:disabled){border-color:var(--accent)}
+.opt.ok{background:var(--ok-soft);border-color:var(--ok)}
+.opt.no{background:var(--bad-soft);border-color:var(--bad);opacity:.8;cursor:default}
+.fb{min-height:1.5em;margin-top:.5rem;font-size:.92rem;color:var(--muted)}
+.fb.ok{color:var(--ok)}
+.fb.no{color:var(--bad)}
+.score{margin-top:.8rem;font-size:.92rem;color:var(--h);font-weight:600}
+
+.pager{display:flex;justify-content:space-between;gap:1rem;margin-top:2.2rem;padding-bottom:2.5rem;flex-wrap:wrap}
+.pager a{display:inline-flex;align-items:center;gap:.4rem;text-decoration:none;background:var(--num-bg);color:var(--num-fg);padding:.6rem 1.1rem;border-radius:10px;font-weight:500}
+.pager a.ghost{background:var(--surface);color:var(--h);border:1px solid var(--line)}
+
+@media (max-width:720px){
+  .tabs,.two{grid-template-columns:1fr}
+  .band{padding:1.1rem}
+  .ds-row{grid-template-columns:1fr auto}
+  .ds-row .bar{grid-column:1/-1;order:3}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div dir="rtl" lang="ar">
+  <header class="hero">
+    <div class="wrap">
+      <p class="eyebrow">وحدة أدوات وتطبيقات تقنية المعلومات</p>
+      <h1>دليل المشاريع الأربعة</h1>
+      <p class="lead">من تخطيط عرض تقديمي إلى برمجة نموذج تعلّم الآلة. اختر مشروعًا، اتبع خطواته، وضع علامة على كل مهمة تنجزها.</p>
+      <div class="overall">
+        <div class="row"><span>تقدمك في المشاريع الأربعة</span><span id="overall-text">٠٪</span></div>
+        <div class="meter"><i id="overall-fill"></i></div>
+      </div>
+    </div>
+  </header>
+  <main class="wrap">
+    <nav class="tabs" id="tabs" aria-label="المشاريع"></nav>
+    <div id="panel"></div>
+  </main>
+</div>
+
+<script>
+(function(){
+  document.documentElement.lang='ar';
+  document.documentElement.dir='rtl';
+
+  var AR=function(n){return String(n).replace(/\d/g,function(d){return '٠١٢٣٤٥٦٧٨٩'[d];});};
+  var T=function(s){return s.replace(/[A-Za-z][A-Za-z0-9]*(?: [A-Za-z0-9]+)*/g,function(m){return '<bdi dir="ltr" class="lat">'+m+'</bdi>';});};
+
+  var AI_TOPICS_NOTE='يمكنك تحديد موضوع آخر يتناسب مع هذا المجال بعد استشارة معلمك.';
+  var TOOL_NOTE='يمكنك استخدام أي تطبيق أو أداة مشابهة تحقّق الغرض.';
+  var STORAGE_TOOL={cat:'تطبيقات تخزين الملفات',apps:['Microsoft OneDrive','Google Drive'],use:'لحفظ المواد.'};
+
+  var P=[
+  {
+    id:'p1',n:1,ord:'الأول',title:'تخطيط عرض تقديمي',
+    intro:[
+      'العرض التقديمي أداة فعّالة لنقل الأفكار والمعلومات إلى الجمهور المستهدف. وقدرتك على تقديم عرض مقنع تساعدك على تثقيف زملائك في الصف عن القضايا الاجتماعية المختلفة، والتأثير فيهم من خلال تواصلك الفعّال معهم.',
+      'يهدف هذا المشروع إلى التخطيط لعرض تقديمي: تضع تصورًا واضحًا للموضوع، وتطوّر الأفكار، وتنظّم المحتوى، وتختار المواد الداعمة التي تساعدك على إعداد عرض فعّال.'
+    ],
+    topics:[
+      {t:'مستقبل الذكاء الاصطناعي',d:'يشهد العالم تحولات واسعة بفعل أنظمة الذكاء الاصطناعي في التعليم والقانون والنقل والتمويل والطاقة والتصنيع والرعاية الصحية. خطّط لعرض يسلّط الضوء على الفوائد والتحديات المصاحبة له، مثل المخاوف الأخلاقية والإزاحة الوظيفية وخصوصية البيانات.'},
+      {t:'تأثير التقنية على الصحة',d:'الذكاء الاصطناعي والأجهزة القابلة للارتداء والتطبيب عن بُعد تُحسّن الوصول إلى العلاج والتشخيص. ابحث في أنظمة المراقبة التي تجمع البيانات الطبية، وكيف تدعم الرعاية الوقائية والتشخيص المبكر، ثم اقترح عادات استخدام صحية للحد من المخاطر.'}
+    ],
+    tools:[
+      {cat:'تطبيقات تحرير الفيديو',apps:['Clipchamp']},
+      {cat:'تطبيقات تحرير الصوت',apps:['Audacity']},
+      {cat:'تطبيقات توليد النصوص والصور',apps:['Copilot Designer','Canva AI','Adobe Photoshop AI']},
+      STORAGE_TOOL
+    ],
+    skills:[
+      {t:'البحث',d:'القدرة على إجراء بحث شامل وفعّال لجمع المعلومات ذات الصلة بالموضوع.'},
+      {t:'سرد القصص',d:'صياغة قصة تشويقية تجذب الجمهور، فتصبح المعلومات مترابطة وجذابة.'}
+    ],
+    steps:[
+      {t:'تجميع المعلومات عن الموضوع',d:'ابدأ ببحث مكثف حول الموضوع الذي اخترته، واستفد من مصادر التعلّم المختلفة. كلما تعمقت في البحث تعزز أساس معرفتك وفهمت الموضوع على نحو أعمق.',
+       items:['ابحث في مواقع الويب والكتب والدراسات العلمية','أجرِ مقابلة مع خبير في المجال إن أمكن','اجمع الصور والنصوص والمقالات ومقاطع الفيديو مع مراعاة حقوق الملكية الفكرية','احفظ المواد التي تستحقها كملفات في مجلد، أو دوّن ملاحظاتك من الكتب التي تقرؤها']},
+      {t:'التخطيط للعرض التقديمي',d:'نظّم المعلومات التي جمعتها بطريقة منطقية، وارسم أفكارك أو اكتبها، واربط العلاقات بين المفاهيم، ثم أنشئ لوحة عمل لما سيتم تقديمه.',
+       qlabel:'اطرح على نفسك هذه الأسئلة لتخطيط جيد:',chips:['ما الغرض من العرض التقديمي؟','ما الفئة المستهدفة؟','ما الأدوات والتطبيقات المستخدمة؟'],
+       items:['نظّم المعلومات التي جمعتها بطريقة منطقية','ارسم أفكارك أو اكتبها واربط العلاقات بين المفاهيم','أنشئ لوحة عمل لما سيتم تقديمه','أجب عن الأسئلة الثلاثة أعلاه']},
+      {t:'تجهيز المواد الداعمة للعرض التقديمي',d:'جهّز مواد تجعل عرضك أكثر إثارة وجذبًا للجمهور: مقطع فيديو يتضمن نصائح من مختصين، أو مقابلات تعرض تجارب مختلفة، أو قصة متحركة متعلقة بالموضوع، أو استضافة شخص مختص عن بُعد لإثراء الموضوع أثناء العرض.',
+       pointsLabel:'في تطبيق Clipchamp يمكنك:',points:['إضافة مقاطع الفيديو التي التقطتها وتحريرها إذا لزم الأمر','استيراد المقاطع الصوتية وضبط وقت البدء ونقطة النهاية للصوت','إضافة الصور مع تطبيق التأثيرات الانتقالية والحركية'],
+       items:['سجّل مقاطع الفيديو بكاميرا الفيديو أو كاميرا الهاتف الذكي','سجّل الصوت وعالجه في Audacity، أو ولّد أصواتًا بأدوات الذكاء الاصطناعي','حرّر مقاطع الفيديو في Clipchamp']},
+      {t:'تخزين المواد الداعمة للعرض التقديمي',d:'نظّم المعلومات التي جمعتها وأنشأتها في هيكل واضح ومناسب. أنشئ مجلدًا لكل نوع بيانات لتصل إلى ملفاتك بسهولة عند إنشاء العرض.',
+       viz:'folders',
+       items:['أنشئ مجلدات منفصلة للصوت والفيديو والصور','انقل كل ملف إلى المجلد المناسب له']},
+      {t:'التقييم',d:'قيّم خطة العرض التقديمي التي أعددتها.',
+       items:['راجع وضوح الهدف','راجع تسلسل الأفكار في المخطط','راجع كفاية المعلومات والمواد الداعمة','ناقش التحديات التي واجهتها والحلول التي نفذتها']}
+    ],
+    quiz:[
+      {q:'أي تطبيق يُستخدم لتحرير مقاطع الفيديو في هذا المشروع؟',o:['Clipchamp','Audacity','Google Drive'],a:0,why:'Clipchamp لتحرير الفيديو، وAudacity للصوت.'},
+      {q:'ما أول خطوة في طريقة تنفيذ المشروع الأول؟',o:['تخزين المواد الداعمة','تجميع المعلومات عن الموضوع','التقييم'],a:1,why:'تبدأ ببحث مكثف عن الموضوع قبل أي تخطيط.'}
+    ]
+  },
+  {
+    id:'p2',n:2,ord:'الثاني',title:'تقديم عرض',
+    intro:[
+      'بعد تخطيط العرض التقديمي، يجب تنظيم محتواه وتقديمه بطريقة منطقية وجذابة. يركز هذا المشروع على إعداد وتقديم العرض النهائي بناءً على التخطيط الذي أنجزته في المشروع السابق.'
+    ],
+    topics:[
+      {t:'مستقبل الذكاء الاصطناعي',d:'يُحدث الذكاء الاصطناعي تحولًا جذريًا في العالم من حولنا. أعدّ عرضًا تقديميًا عن تطبيقاته الحالية وإمكاناته المستقبلية والتحديات الأخلاقية والمجتمعية التي يمثلها.'},
+      {t:'تأثير التقنية على الصحة',d:'من التشخيص المدعوم بالذكاء الاصطناعي والأجهزة القابلة للارتداء إلى التطبيب عن بُعد والتطبيقات الصحية، تُحسّن الابتكارات التقنية العلاج والوقاية والصحة النفسية. أعدّ عرضًا عن فوائد هذه التطورات وتحدياتها يُثري معلومات الجمهور ويُشركه.'}
+    ],
+    tools:[{cat:'تطبيقات العروض التقديمية',apps:['Google Slides','Microsoft Powerpoint']}],
+    skills:[
+      {t:'التصميم المرئي',d:'تصميم شرائح وعناصر مرئية لا تقتصر على جاذبية المظهر، بل تعزز فهم الموضوع.'},
+      {t:'التحدث أمام الجمهور',d:'تقديم العرض بطريقة واضحة وبثقة تجذب انتباه الجمهور.'},
+      {t:'الكفاءة التقنية',d:'استخدام أدوات وتطبيقات متنوعة بكفاءة لتجميع مكونات الوسائط المتعددة في عرض مترابط.'}
+    ],
+    steps:[
+      {t:'إنشاء العرض التقديمي',d:'أنشئ العرض الخاص بك وأضف الشرائح التي تعتقد أنها ضرورية. استخدم كل شريحة للتعبير عن فكرة واحدة. وهذه مقترحات تجعل عرضك ناجحًا:',
+       items:['أدخل المادة التي حفظتها واربط ملفات الوسائط المتعددة، ثم نظّم الشرائح بالتسلسل الصحيح','لا تنسَ تضمين لوحة العمل التي أنشأتها','أضف التأثيرات الانتقالية والحركية، واختر نَسَقًا جذابًا للنص أو الصور','أضف رؤوسًا وتذييلات، وأشر إلى موقع مواردك في الشريحة الأخيرة']},
+      {t:'تقديم العرض التقديمي للجمهور',d:'بعد أن يصبح عرضك جاهزًا، حان وقت التقديم.',
+       items:['تدرّب جيدًا قبل تقديمه أمام زملائك ومعلمك','كن واثقًا من نفسك وتحدث بوضوح أثناء العرض','تجنّب القراءة من الشرائح حتى لا يصبح عرضك مملًّا','تفاعل مع الجمهور وأجب عن استفساراتهم عن موضوعك']},
+      {t:'تقييم العروض التقديمية',d:'قيّم العروض التي قدمها زملاؤك وفقًا للنموذج المحدد، وقدّم نصائح بناءة للمتحدث لمساعدته في تحسين مهارته في تقديم العروض مستقبلًا.',
+       items:['قيّم كل عرض وفق النموذج المحدد','اكتب نصيحة بناءة واحدة على الأقل لكل متحدث']}
+    ],
+    quiz:[
+      {q:'كم فكرة ينبغي أن تعبّر عنها كل شريحة؟',o:['فكرة واحدة','ثلاث أفكار','كل المعلومات دفعة واحدة'],a:0,why:'شريحة واحدة لفكرة واحدة تجعل العرض واضحًا.'},
+      {q:'ما الذي تتجنبه أثناء تقديم العرض؟',o:['التحدث بوضوح','التفاعل مع الجمهور','القراءة من الشرائح'],a:2,why:'القراءة من الشرائح تجعل العرض مملًّا.'}
+    ]
+  },
+  {
+    id:'p3',n:3,ord:'الثالث',title:'تدريب نموذج تعلّم الآلة',
+    intro:[
+      'يساعدنا الذكاء الاصطناعي على اتخاذ خيارات أفضل كل يوم، من التعرّف على الأصوات إلى تصفية الصور وتقديم توصيات بشأن المحتوى. يركز هذا المشروع على كيفية تعلّم الآلات تصنيف الصور والاستجابة بذكاء.',
+      'ستنشئ نظامًا ذكيًا يجمع بين الإبداع وحل المشكلات والتقنية، وتفهم كيف تتعلم الآلات وكيف تُعدّ بيانات تدريب عالية الجودة.'
+    ],
+    topics:[
+      {t:'مُصنِّف الأطعمة الصحية',d:'التغذية الصحية المتوازنة تزوّد الجسم بما يحتاجه للحفاظ على الصحة والوقاية من الأمراض. درّب نموذجًا يتعرف إلى أنواع مختلفة من الأطعمة عبر الصور، ويصنفها على أنها صحية أو غير صحية.'},
+      {t:'مُصنِّف النفايات',d:'الاستفادة من النفايات تقلل التلوث وتحافظ على الموارد الطبيعية. درّب نموذجًا يصنف النفايات اليومية إلى ثلاث فئات: قابلة لإعادة التدوير، أو قابلة للتحويل إلى سماد، أو قمامة.'}
+    ],
+    toolsLead:'نماذج تعلم الآلة',
+    tools:[
+      {cat:'نماذج تعلّم الآلة',apps:['Teachable Machine'],use:'لإنشاء نموذج تعلّم الآلة.',link:'https://teachablemachine.withgoogle.com'},
+      STORAGE_TOOL
+    ],
+    skills:[
+      {t:'تصنيف الصور',d:'تصنيف الصور أثناء التدريب.'},
+      {t:'تدريب النموذج',d:'تدريب النموذج وتحسين دقته.'}
+    ],
+    steps:[
+      {t:'اختيار موضوع نموذجك وهدفه',d:'اختر موضوعًا للتصنيف، مثل طعام صحي مقابل غير صحي، أو فئات النفايات: قابلة لإعادة التدوير، قابلة للتحويل إلى سماد، قمامة.',
+       items:['اختر موضوعًا للتصنيف','اكتب وصفًا موجزًا للمشروع وهدفه','حدد فئات نموذجك']},
+      {t:'جمع الموارد',d:'ابحث عن 15 صورة واضحة على الأقل لكل فئة. جرّب العدّاد أدناه لتعرف كم صورة ما زالت تنقصك.',
+       viz:'dataset',
+       items:['ابحث عن 15 صورة واضحة على الأقل لكل فئة من فئات نموذجك','احفظها في مجلدات مصنفة بوضوح','ضمّن بعض الصور الاختبارية التي لم تستخدمها في التدريب']},
+      {t:'إنشاء النموذج',d:'ابدأ مشروعًا جديدًا في المنصة بهذه الخيارات بالترتيب:',
+       items:['افتح منصة Teachable Machine','اختر Image Project (مشروع صورة)','انقر Standard image model (نموذج الصورة القياسية)']},
+      {t:'إنشاء التصنيفات',d:'كل تصنيف هو فئة يتعلمها النموذج.',
+       items:['أنشئ التصنيفات المطلوبة','أضف الصور لكل تصنيف']},
+      {t:'تدريب النموذج واختباره',d:'بعد إضافة الصور، دع المنصة تدرّب النموذج ثم جرّبه.',
+       items:['درّب النموذج بزر Train Model (تدريب النموذج)','اختبر النموذج بخيار Preview (المعاينة)'],
+       tip:'اختبر بصور لم يتدرب عليها النموذج. إذا أخطأ، أضف صورًا أوضح للتصنيف المتأثر ودرّبه من جديد.'},
+      {t:'تصدير النموذج',d:'احفظ نموذجك ليكون جاهزًا للمشروع الرابع.',
+       items:['صدّر النموذج لاستخدامه لاحقًا']}
+    ],
+    quiz:[
+      {q:'كم صورة واضحة على الأقل تحتاجها لكل فئة؟',o:['٥ صور','١٥ صورة','٥٠ صورة'],a:1,why:'المطلوب ١٥ صورة واضحة على الأقل لكل فئة.'},
+      {q:'أي زر تضغطه لتدريب النموذج؟',o:['Preview','Standard image model','Train Model'],a:2,why:'زر Train Model يبدأ التدريب، وPreview للاختبار بعده.'}
+    ]
+  },
+  {
+    id:'p4',n:4,ord:'الرابع',title:'استخدام نموذج تعلّم الآلة لمقطع برمجي',
+    intro:[
+      'بعد تدريب نموذج تعلّم الآلة يمكن دمجه في مقطع برمجي يستجيب لمدخلات المستخدم بطرق فعّالة. يهدف هذا المشروع إلى إنشاء مقطع برمجي تفاعلي واختباره، يستخدم النموذج المدرَّب في المشروع السابق لتقديم ملاحظات وتوصيات واتخاذ قرارات بناءً على بيانات المستخدم.'
+    ],
+    topics:[
+      {t:'مُصنِّف الأطعمة الصحية',d:'أنشئ مقطعًا برمجيًا يتعرف إلى أنواع مختلفة من الأطعمة، ويقدم ملاحظات فورية حول ما إذا كانت صحية أم غير صحية.'},
+      {t:'مُصنِّف النفايات',d:'أنشئ مقطعًا برمجيًا يحدد النفايات ويصنفها إلى ثلاث فئات: قابلة لإعادة التدوير، أو قابلة للتحويل إلى سماد، أو قمامة.'}
+    ],
+    tools:[
+      {cat:'منصة إنشاء مقاطع برمجية',apps:['RAISE Playground'],use:'(ملعب رايز) لإنشاء مقاطع برمجية تفاعلية.'},
+      STORAGE_TOOL
+    ],
+    skills:[
+      {t:'البرمجة',d:'استخدام اللبنات للاستجابة لمخرجات المقطع البرمجي.'},
+      {t:'التصحيح والاختبار',d:'التحقق من تنبؤات النموذج وتفاعلات المقطع البرمجي.'}
+    ],
+    steps:[
+      {t:'برمجة نموذج تعلّم الآلة',d:'جهّز مشروعك في المنصة.',
+       items:['افتح منصة RAISE Playground (ملعب رايز) وأنشئ مشروعًا جديدًا','أضف امتداد منصة Teachable Machine','أضف الكائنات المناسبة']},
+      {t:'إنشاء المقطع البرمجي',d:'اربط نموذجك الذي دربته في المشروع الثالث بلبنات البرمجة.',
+       items:['استورد النموذج المُدرَّب','أضف لبنات برمجية للاستجابة لمخرجات النموذج']},
+      {t:'اجعل نموذجك تفاعليًا',d:'اجعل المقطع يرد على كل تصنيف. جرّب المحاكاة أدناه لترى كيف تعمل القواعد من النوع: إذا كان التصنيف كذا، فاعرض كذا.',
+       viz:'logic',
+       items:['أضف مؤثرات صوتية أو قوائم نقطية','اعرض نصيحة أو معلومة بعد كل تصنيف صحيح']},
+      {t:'اختبر النموذج',d:'تأكد أن النموذج والمقطع يعملان مع بيانات جديدة.',
+       items:['استخدم صورًا جديدة أو صورًا لأطعمة حقيقية','اختبر الإجابات وعدّل البرمجة حسب الحاجة','اطلب من زملائك في الصف تجربة اللعبة وإبداء آرائهم']},
+      {t:'اعرض نموذجك',d:'شارك ما أنجزته.',
+       items:['اعرض النموذج على معلمك وزملائك في الصف']}
+    ],
+    quiz:[
+      {q:'ما المنصة المستخدمة لبرمجة المقطع التفاعلي؟',o:['RAISE Playground','Audacity','Clipchamp'],a:0,why:'منصة RAISE Playground (ملعب رايز) لإنشاء مقاطع برمجية تفاعلية.'},
+      {q:'ماذا تضيف إلى مشروعك لتستخدم النموذج المدرَّب؟',o:['امتداد Clipchamp','امتداد Teachable Machine','ملف صوتي فقط'],a:1,why:'امتداد Teachable Machine يتيح استيراد النموذج واستخدام مخرجاته.'}
+    ]
+  }
+  ];
+
+  var GROUPS=[
+    {label:'المشروعان الأول والثاني',sub:'من الفكرة إلى العرض',ids:[0,1]},
+    {label:'المشروعان الثالث والرابع',sub:'من البيانات إلى المقطع البرمجي',ids:[2,3]}
+  ];
+
+  var KEY='projects-guide-v1';
+  var store={};
+  try{store=JSON.parse(localStorage.getItem(KEY)||'{}')||{};}catch(e){store={};}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(store));}catch(e){}}
+  function k(p,s,i){return p.id+':'+s+':'+i;}
+  function pc(p){var t=0,d=0;p.steps.forEach(function(s,si){s.items.forEach(function(_,ii){t++;if(store[k(p,si,ii)])d++;});});return{t:t,d:d};}
+  function sc(p,si){var s=p.steps[si],d=0;s.items.forEach(function(_,ii){if(store[k(p,si,ii)])d++;});return{t:s.items.length,d:d};}
+  function pct(a,b){return b?Math.round(a/b*100):0;}
+
+  var openSteps={};
+  function initOpen(p){
+    if(openSteps[p.id])return;
+    var o={},first=-1;
+    for(var i=0;i<p.steps.length;i++){var c=sc(p,i);if(c.d<c.t){first=i;break;}}
+    o[first<0?0:first]=true;
+    openSteps[p.id]=o;
+  }
+
+  var ds={mode:'waste',waste:[15,9,12],food:[18,6]};
+  var DS_NAMES={waste:['قابلة لإعادة التدوير','قابلة للتحويل إلى سماد','قمامة'],food:['طعام صحي','طعام غير صحي']};
+  var lg={mode:'waste',sel:0};
+  var LG={
+    waste:[
+      {c:'قابلة لإعادة التدوير',tip:'ضع هذه المادة في حاوية إعادة التدوير.',snd:'صوت تصفيق'},
+      {c:'قابلة للتحويل إلى سماد',tip:'أضفها إلى بقايا الطعام لتتحول إلى سماد.',snd:'صوت نمو نبات'},
+      {c:'قمامة',tip:'لا يمكن تدويرها. ضعها في حاوية القمامة.',snd:'صوت تنبيه قصير'}
+    ],
+    food:[
+      {c:'طعام صحي',tip:'اختيار ممتاز، فهذا الطعام يمدّ جسمك بما يحتاجه.',snd:'صوت تصفيق'},
+      {c:'طعام غير صحي',tip:'تناوله باعتدال، وجرّب بديلًا صحيًا.',snd:'صوت تنبيه قصير'}
+    ]
+  };
+  var MODE_NAMES={waste:'النفايات',food:'الأطعمة'};
+
+  function seg(act,cur){
+    return '<div class="seg" role="group" aria-label="الموضوع">'+['waste','food'].map(function(m){
+      return '<button type="button" data-act="'+act+'" data-m="'+m+'" aria-pressed="'+(cur===m)+'">'+MODE_NAMES[m]+'</button>';
+    }).join('')+'</div>';
+  }
+
+  function wDataset(){
+    var arr=ds[ds.mode],names=DS_NAMES[ds.mode],ok=0;
+    var rows=names.map(function(n,i){
+      var c=arr[i],full=c>=15;if(full)ok++;
+      return '<div class="ds-row"><span class="nm">'+n+'</span>'+
+        '<div class="bar'+(full?' full':'')+'"><i style="width:'+Math.min(100,c/15*100)+'%"></i></div>'+
+        '<div class="cnt"><button type="button" data-act="ds-dec" data-i="'+i+'" aria-label="إنقاص صورة من '+n+'">−</button><b>'+AR(c)+'</b><button type="button" data-act="ds-inc" data-i="'+i+'" aria-label="إضافة صورة إلى '+n+'">+</button></div>'+
+        '<span class="ds-st'+(full?' ok':'')+'">'+(full?'العدد كافٍ':'ينقصك '+AR(15-c)+' صور لتصل إلى ١٥')+'</span></div>';
+    }).join('');
+    return '<div class="wg-head"><strong>عدّاد الصور</strong><span class="tag">مثال للتجربة</span></div>'+seg('ds-mode',ds.mode)+rows+
+      '<p class="wg-sum">الفئات المكتملة: '+AR(ok)+' من '+AR(names.length)+'</p>';
+  }
+  function wLogic(){
+    var rules=LG[lg.mode];if(lg.sel>=rules.length)lg.sel=0;
+    var btns=rules.map(function(r,i){return '<button type="button" data-act="lg-sel" data-i="'+i+'" aria-pressed="'+(lg.sel===i)+'">'+r.c+'</button>';}).join('');
+    var list=rules.map(function(r,i){
+      return '<div class="rule'+(lg.sel===i?' on':'')+'">إذا كان التصنيف «'+r.c+'»<small>اعرض: '+r.tip+' ثم شغّل: '+r.snd+'</small></div>';
+    }).join('');
+    return '<div class="wg-head"><strong>محاكاة قواعد المقطع</strong><span class="tag">أمثلة توضيحية</span></div>'+seg('lg-mode',lg.mode)+
+      '<p class="lbl" style="margin-top:0">اختر التصنيف الذي يتنبأ به النموذج:</p><div class="lg-btns">'+btns+'</div>'+list;
+  }
+  function wFolders(){
+    return '<div class="wg-head"><strong>هيكل المجلدات المقترح</strong></div><div class="tree"><div class="root">مشروع العرض التقديمي</div><ul>'+
+      '<li>مجلد الصوت <em>— تسجيلات Audacity</em></li>'+
+      '<li>مجلد الفيديو <em>— مقاطع Clipchamp</em></li>'+
+      '<li>مجلد الصور <em>— الصور والرسومات</em></li></ul></div>';
+  }
+
+  function toolHtml(t){
+    var apps=t.apps.map(function(a){
+      var c='<span class="chip">'+T(a)+'</span>';
+      return t.link?'<a href="'+t.link+'" target="_blank" rel="noopener" style="text-decoration:none">'+c+'</a>':c;
+    }).join('');
+    return '<div class="tool"><div class="cat">'+T(t.cat)+(t.use?' <span style="color:var(--muted);font-weight:400;font-size:.88rem">'+T(t.use)+'</span>':'')+'</div><div class="chips">'+apps+'</div></div>';
+  }
+
+  function stepHtml(p,si){
+    var s=p.steps[si],c=sc(p,si),open=openSteps[p.id][si],done=c.d===c.t;
+    var h='<section class="step'+(open?' open':'')+(done?' done':'')+'" data-step="'+si+'">'+
+      '<button type="button" class="step-h" data-act="toggle" data-step="'+si+'" aria-expanded="'+(!!open)+'">'+
+      '<span class="sn">'+AR(si+1)+'</span><span class="st">'+T(s.t)+'</span><span class="sc">'+AR(c.d)+'/'+AR(c.t)+'</span><span class="chev" aria-hidden="true"></span></button>'+
+      '<div class="step-b"><p>'+T(s.d)+'</p>';
+    if(s.qlabel){h+='<p class="lbl">'+s.qlabel+'</p><div class="qchips">'+s.chips.map(function(x){return '<span>'+x+'</span>';}).join('')+'</div>';}
+    if(s.points){h+='<p class="lbl">'+T(s.pointsLabel)+'</p><ul class="pts">'+s.points.map(function(x){return '<li>'+T(x)+'</li>';}).join('')+'</ul>';}
+    if(s.viz){h+='<div class="widget" data-widget="'+s.viz+'"></div>';}
+    h+='<p class="lbl">مهامك في هذه الخطوة</p>';
+    s.items.forEach(function(it,ii){
+      var kk=k(p,si,ii);
+      h+='<label class="check"><input type="checkbox" data-key="'+kk+'"'+(store[kk]?' checked':'')+'><span class="box" aria-hidden="true"></span><span class="tx">'+T(it)+'</span></label>';
+    });
+    if(s.tip)h+='<p class="tip">'+T(s.tip)+'</p>';
+    h+='</div></section>';
+    return h;
+  }
+
+  function panelHtml(p,idx){
+    initOpen(p);
+    var c=pc(p);
+    var h='<div class="band"><small>المشروع '+p.ord+':</small><h2>'+T(p.title)+'</h2>'+
+      '<div class="prog"><div class="meter"><i data-fill="'+p.id+'" style="width:'+pct(c.d,c.t)+'%"></i></div><span class="prog-text" data-ptext="'+p.id+'">أنجزت '+AR(c.d)+' من '+AR(c.t)+' مهمة</span></div></div>';
+    h+='<section class="sec"><h3>المقدمة</h3>'+p.intro.map(function(x){return '<p>'+T(x)+'</p>';}).join('')+'</section>';
+    h+='<section class="sec"><h3>موضوعات مقترحة</h3><div class="cards">'+p.topics.map(function(t){return '<article class="card"><h4>'+T(t.t)+'</h4><p>'+T(t.d)+'</p></article>';}).join('')+'</div>'+
+      '<div class="note"><b>i</b><span>'+AI_TOPICS_NOTE+'</span></div></section>';
+    h+='<section class="sec two"><div><h3 style="font-family:var(--font-display);font-weight:600;font-size:1.3rem;color:var(--accent);margin-bottom:.4rem">الأدوات المقترحة</h3>'+p.tools.map(toolHtml).join('')+'<div class="note"><b>i</b><span>'+TOOL_NOTE+'</span></div></div>'+
+      '<div><h3 style="font-family:var(--font-display);font-weight:600;font-size:1.3rem;color:var(--accent);margin-bottom:.4rem">المهارات الأساسية</h3>'+p.skills.map(function(s){return '<div class="skill"><b>'+s.t+':</b> '+T(s.d)+'</div>';}).join('')+'</div></section>';
+    h+='<section class="sec"><h3>طريقة التنفيذ</h3><div class="steps">'+p.steps.map(function(_,si){return stepHtml(p,si);}).join('')+'</div></section>';
+    h+='<section class="sec"><h3>اختبر فهمك</h3>'+p.quiz.map(function(q,qi){
+      return '<div class="q" data-q="'+qi+'"><p class="q-t">'+AR(qi+1)+'. '+T(q.q)+'</p><div class="opts">'+q.o.map(function(o,oi){return '<button type="button" class="opt" data-act="pick" data-q="'+qi+'" data-o="'+oi+'">'+T(o)+'</button>';}).join('')+'</div><p class="fb" aria-live="polite"></p></div>';
+    }).join('')+'<p class="score" id="score">أجبت عن ٠ من '+AR(p.quiz.length)+' بشكل صحيح</p></section>';
+    var prev=idx>0?'<a class="ghost" href="#project-'+idx+'">→ المشروع '+P[idx-1].ord+'</a>':'<span></span>';
+    var next=idx<P.length-1?'<a href="#project-'+(idx+2)+'">المشروع '+P[idx+1].ord+' ←</a>':'<span></span>';
+    h+='<div class="pager">'+prev+next+'</div>';
+    return h;
+  }
+
+  function tabsHtml(cur){
+    return GROUPS.map(function(g){
+      return '<div class="tgroup"><h2>'+g.label+'</h2><p class="sub">'+g.sub+'</p><div class="tgrid">'+g.ids.map(function(i){
+        var p=P[i],c=pc(p);
+        return '<a class="tab" href="#project-'+(i+1)+'"'+(i===cur?' aria-current="page"':'')+'><span class="tn">المشروع '+p.ord+'</span><span class="tt">'+T(p.title)+'</span><span class="tp" data-tab="'+p.id+'">'+AR(pct(c.d,c.t))+'٪ مكتمل</span></a>';
+      }).join('')+'</div></div>';
+    }).join('');
+  }
+
+  function cur(){var m=location.hash.match(/^#project-([1-4])$/);return m?(+m[1]-1):0;}
+  var panel=document.getElementById('panel'),tabs=document.getElementById('tabs');
+  var first=true;
+
+  function renderWidgets(){
+    var w=panel.querySelectorAll('[data-widget]');
+    for(var i=0;i<w.length;i++){
+      var t=w[i].getAttribute('data-widget');
+      w[i].innerHTML=t==='dataset'?wDataset():t==='logic'?wLogic():wFolders();
+    }
+  }
+
+  function render(){
+    var idx=cur();
+    tabs.innerHTML=tabsHtml(idx);
+    panel.innerHTML=panelHtml(P[idx],idx);
+    renderWidgets();
+    refreshTotals();
+    if(!first){tabs.scrollIntoView({block:'start'});}
+    first=false;
+  }
+
+  function refreshTotals(){
+    var T_=0,D_=0;
+    P.forEach(function(p){
+      var c=pc(p);T_+=c.t;D_+=c.d;
+      var el=document.querySelector('[data-tab="'+p.id+'"]');
+      if(el)el.textContent=AR(pct(c.d,c.t))+'٪ مكتمل';
+    });
+    document.getElementById('overall-text').textContent=AR(pct(D_,T_))+'٪';
+    document.getElementById('overall-fill').style.width=pct(D_,T_)+'%';
+  }
+
+  function refreshPanel(){
+    var p=P[cur()],c=pc(p);
+    var f=panel.querySelector('[data-fill]');if(f)f.style.width=pct(c.d,c.t)+'%';
+    var t=panel.querySelector('[data-ptext]');if(t)t.textContent='أنجزت '+AR(c.d)+' من '+AR(c.t)+' مهمة';
+    p.steps.forEach(function(_,si){
+      var el=panel.querySelector('.step[data-step="'+si+'"]');if(!el)return;
+      var s=sc(p,si);
+      el.classList.toggle('done',s.d===s.t);
+      el.querySelector('.sc').textContent=AR(s.d)+'/'+AR(s.t);
+    });
+    refreshTotals();
+  }
+
+  panel.addEventListener('change',function(e){
+    var cb=e.target.closest('input[data-key]');if(!cb)return;
+    if(cb.checked)store[cb.getAttribute('data-key')]=1;else delete store[cb.getAttribute('data-key')];
+    save();refreshPanel();
+  });
+
+  panel.addEventListener('click',function(e){
+    var b=e.target.closest('[data-act]');if(!b)return;
+    var act=b.getAttribute('data-act'),p=P[cur()];
+    if(act==='toggle'){
+      var si=+b.getAttribute('data-step'),el=b.closest('.step');
+      var o=!el.classList.contains('open');
+      el.classList.toggle('open',o);b.setAttribute('aria-expanded',o);
+      openSteps[p.id][si]=o;
+    }else if(act==='pick'){
+      var qi=+b.getAttribute('data-q'),oi=+b.getAttribute('data-o'),q=p.quiz[qi];
+      var box=b.closest('.q'),fb=box.querySelector('.fb');
+      if(box.classList.contains('solved'))return;
+      if(oi===q.a){
+        b.classList.add('ok');box.classList.add('solved');
+        var all=box.querySelectorAll('.opt');for(var i=0;i<all.length;i++)all[i].disabled=true;
+        fb.textContent='إجابة صحيحة. '+q.why;fb.className='fb ok';
+        var n=panel.querySelectorAll('.q.solved').length;
+        document.getElementById('score').textContent='أجبت عن '+AR(n)+' من '+AR(p.quiz.length)+' بشكل صحيح';
+      }else{
+        b.classList.add('no');b.disabled=true;
+        fb.textContent='ليست الإجابة الصحيحة. حاول مرة أخرى.';fb.className='fb no';
+      }
+    }else if(act==='ds-mode'){ds.mode=b.getAttribute('data-m');renderWidgets();
+    }else if(act==='ds-inc'||act==='ds-dec'){
+      var i2=+b.getAttribute('data-i'),a=ds[ds.mode];
+      a[i2]=Math.max(0,Math.min(40,a[i2]+(act==='ds-inc'?1:-1)));renderWidgets();
+    }else if(act==='lg-mode'){lg.mode=b.getAttribute('data-m');lg.sel=0;renderWidgets();
+    }else if(act==='lg-sel'){lg.sel=+b.getAttribute('data-i');renderWidgets();}
+  });
+
+  window.addEventListener('hashchange',render);
+  render();
+})();
+</script>
+
+</body></html>
